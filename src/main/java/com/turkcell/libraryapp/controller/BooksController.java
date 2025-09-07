@@ -1,0 +1,29 @@
+package com.turkcell.libraryapp.controller;
+
+import com.turkcell.libraryapp.dto.book.BookForAddDto;
+import com.turkcell.libraryapp.dto.book.BookForGetDto;
+import com.turkcell.libraryapp.dto.category.CategoryForAddDto;
+import com.turkcell.libraryapp.dto.category.CategoryForGetDto;
+import com.turkcell.libraryapp.service.BookService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("api/v1/books")
+public class BooksController {
+    private BookService bookService;
+
+    public BooksController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping()
+    public List<BookForGetDto> getAllWithDto(){
+        return bookService.getAllWithDto();
+    }
+    @PostMapping()
+    public BookForGetDto addBookWithDto(@RequestBody BookForAddDto bookForAddDto){
+        return bookService.addWithDto(bookForAddDto);
+    }
+}

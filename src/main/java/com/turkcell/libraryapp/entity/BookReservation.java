@@ -10,7 +10,7 @@ public class BookReservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "reservation_date")
     private Date reservationDate;

@@ -1,44 +1,27 @@
-package com.turkcell.libraryapp.entity;
+package com.turkcell.libraryapp.dto.book;
 
-import com.turkcell.libraryapp.repository.CategoryRepository;
-import jakarta.persistence.*;
+import com.turkcell.libraryapp.entity.Category;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "books")
-public class Book {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class BookForAddDto {
     private String title;
     private Date year;
     private String language;
     private int stock;
+    private Integer categoryId;
 
-    @ManyToOne()
-    //@JoinColumn(name = "category_id", nullable = false)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    public Category getCategory() {
-        return category;
+    public BookForAddDto(String title, Date year, String language, int stock, Integer categoryId) {
+        this.title = title;
+        this.year = year;
+        this.language = language;
+        this.stock = stock;
+        this.categoryId = categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public BookForAddDto() {
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -69,5 +52,13 @@ public class Book {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }
