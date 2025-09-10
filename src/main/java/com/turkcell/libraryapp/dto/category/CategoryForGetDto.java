@@ -7,20 +7,20 @@ import java.util.List;
 
 public class CategoryForGetDto {
 
-    private String category;
+    private String categoryName;
 
-    public CategoryForGetDto(String category) {
-        this.category = category;
+    public CategoryForGetDto(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public CategoryForGetDto() {
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

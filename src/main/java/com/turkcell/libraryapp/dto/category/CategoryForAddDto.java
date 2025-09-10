@@ -1,20 +1,20 @@
 package com.turkcell.libraryapp.dto.category;
 
 public class CategoryForAddDto {
-    private String category;
+    private String categoryName;
 
-    public CategoryForAddDto(String category) {
-        this.category = category;
+    public CategoryForAddDto(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public CategoryForAddDto() {
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

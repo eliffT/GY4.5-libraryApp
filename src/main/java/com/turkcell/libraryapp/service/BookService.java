@@ -32,7 +32,7 @@ public class BookService {
             bookForGetDto.setStock(book.getStock());
 
             CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-            categoryForGetDto.setCategory(book.getCategory().getCategory());
+            categoryForGetDto.setCategoryName(book.getCategory().getCategoryName());
             bookForGetDto.setCategoryForGetDto(categoryForGetDto);
 
             bookForGetDtoList.add(bookForGetDto);
@@ -61,10 +61,26 @@ public class BookService {
         bookForGetDto.setStock(bookSaved.getStock());
 
         CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-        categoryForGetDto.setCategory(bookSaved.getCategory().getCategory());
+        categoryForGetDto.setCategoryName(bookSaved.getCategory().getCategoryName());
 
         bookForGetDto.setCategoryForGetDto(categoryForGetDto);
 
         return bookForGetDto;
     }
+
+    public BookForGetDto getByIdWithDto(Integer id){
+        Book book = bookRepository.findById(id).orElseThrow();
+        BookForGetDto dto = new BookForGetDto();
+        dto.setTitle(book.getTitle());
+        dto.setLanguage(book.getLanguage());
+        dto.setYear(book.getYear());
+        dto.setStock(book.getStock());
+
+        CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
+        categoryForGetDto.setCategoryName(book.getCategory().getCategoryName());
+        dto.setCategoryForGetDto(categoryForGetDto);
+        return dto;
+    }
+
+
 }

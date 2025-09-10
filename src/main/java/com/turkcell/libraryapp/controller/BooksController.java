@@ -26,4 +26,10 @@ public class BooksController {
     public BookForGetDto addBookWithDto(@RequestBody BookForAddDto bookForAddDto){
         return bookService.addWithDto(bookForAddDto);
     }
+    @GetMapping("/{id}")
+    public BookForGetDto getByIdWithDto(@PathVariable Integer id){
+        return bookService.getByIdWithDto(id);
+    }
+
+
 }

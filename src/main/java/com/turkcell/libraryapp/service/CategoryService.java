@@ -22,7 +22,7 @@ public class CategoryService {
         List<CategoryForGetDto> categoryForGetDtoList = new ArrayList<CategoryForGetDto>();
         for(Category category: categoryList){
             CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-            categoryForGetDto.setCategory(category.getCategory());
+            categoryForGetDto.setCategoryName(category.getCategoryName());
             categoryForGetDtoList.add(categoryForGetDto);
         }
             return categoryForGetDtoList;
@@ -30,11 +30,11 @@ public class CategoryService {
 
     public CategoryForGetDto addWithDto(CategoryForAddDto categoryForAddDto){
         Category category = new Category();
-        category.setCategory(categoryForAddDto.getCategory());
+        category.setCategoryName(categoryForAddDto.getCategoryName());
 
         Category categorySaved = this.categoryRepository.save(category);
         CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-        categoryForGetDto.setCategory(categorySaved.getCategory());
+        categoryForGetDto.setCategoryName(categorySaved.getCategoryName());
 
         return categoryForGetDto;
     }
