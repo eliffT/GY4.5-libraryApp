@@ -82,5 +82,9 @@ public class BookService {
         return dto;
     }
 
+    public void deleteBookWithById(Integer id){
+        bookRepository.deleteById(id);
+    }
+
 
 }

@@ -35,7 +35,6 @@ public class CategoryService {
         Category categorySaved = this.categoryRepository.save(category);
         CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
         categoryForGetDto.setCategoryName(categorySaved.getCategoryName());
-
         return categoryForGetDto;
     }
 }

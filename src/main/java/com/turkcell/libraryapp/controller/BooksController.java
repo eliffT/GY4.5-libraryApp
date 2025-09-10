@@ -31,5 +31,10 @@ public class BooksController {
         return bookService.getByIdWithDto(id);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteBookWithById(@PathVariable Integer id){
+      bookService.deleteBookWithById(id);
+    }
+
 
 }
