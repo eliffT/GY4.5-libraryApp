@@ -16,26 +16,20 @@ public class Loan {
     @Column(name = "borrow_date")
     private Date borrowDate;
 
+    @Column(name = "due_date")
+    private Date dueDate;
+
     @Column(name = "return_date")
     private Date returnDate;
 
-    @Column(name = "is_delivered")
-    private Boolean isDelivered;
+    @Enumerated(EnumType.STRING)  // Enum değerlerini String olarak kaydedilir
+    private LoanStatus status;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
-    @Column(name = "book_id", nullable = false)
-    private Integer bookId;
-
-    @Column(name = "status_id", nullable = false)
-    private Integer statusId;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -55,11 +49,11 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
-    public Boolean getDelivered() {
-        return isDelivered;
+    public LoanStatus getStatus() {
+        return status;
     }
 
-    public void setDelivered(Boolean delivered) {
-        isDelivered = delivered;
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 }

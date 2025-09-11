@@ -28,7 +28,7 @@ public class LoanService {
             dto.setId(loan.getId());
             dto.setBorrowDate(loan.getBorrowDate());
             dto.setReturnDate(loan.getReturnDate());
-            dto.setDelivered(loan.getDelivered());
+//            dto.setDelivered(loan.getDelivered());
             result.add(dto);
         }
         return result;
@@ -42,7 +42,7 @@ public class LoanService {
         dto.setId(loan.getId());
         dto.setBorrowDate(loan.getBorrowDate());
         dto.setReturnDate(loan.getReturnDate());
-        dto.setDelivered(loan.getDelivered());
+//        dto.setDelivered(loan.getDelivered());
         return dto;
     }
 
