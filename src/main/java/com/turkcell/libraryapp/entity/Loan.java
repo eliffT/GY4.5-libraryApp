@@ -56,5 +56,4 @@ public class Loan {
     public void setStatus(LoanStatus status) {
         this.status = status;
     }
-
 }
