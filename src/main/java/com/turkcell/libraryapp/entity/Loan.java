@@ -1,6 +1,7 @@
 package com.turkcell.libraryapp.entity;
 
 
+import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -24,6 +25,17 @@ public class Loan {
 
     @Enumerated(EnumType.STRING)  // Enum değerlerini String olarak kaydedilir
     private LoanStatus status;
+
+    @ManyToOne()
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    @OneToOne(mappedBy = "loan")
+    private Fine fine;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Integer getId() {
         return id;
@@ -56,4 +68,37 @@ public class Loan {
     public void setStatus(LoanStatus status) {
         this.status = status;
     }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Fine getFine() {
+        return fine;
+    }
+
+    public void setFine(Fine fine) {
+        this.fine = fine;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

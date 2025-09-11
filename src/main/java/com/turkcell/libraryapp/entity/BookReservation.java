@@ -1,5 +1,6 @@
 package com.turkcell.libraryapp.entity;
 
+import com.turkcell.libraryapp.entity.enumarations.ReservationStatus;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -17,6 +18,13 @@ public class BookReservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Integer getId() {
         return id;
@@ -40,5 +48,21 @@ public class BookReservation {
 
     public void setStatus(ReservationStatus status) {
         this.status = status;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

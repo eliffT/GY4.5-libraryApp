@@ -18,6 +18,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Book> Books;
 
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +42,6 @@ public class Category {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
 
 }

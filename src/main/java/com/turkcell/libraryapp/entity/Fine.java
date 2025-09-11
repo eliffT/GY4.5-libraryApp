@@ -16,6 +16,11 @@ public class Fine {
     private Integer amount;
 
 
+    @OneToOne()
+    @JoinColumn(name = "loan_id")
+    private Loan loan;
+
+
     public Integer getId() {
         return id;
     }
@@ -40,5 +45,12 @@ public class Fine {
         this.amount = amount;
     }
 
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public void setLoan(Loan loan) {
+        this.loan = loan;
+    }
 
 }

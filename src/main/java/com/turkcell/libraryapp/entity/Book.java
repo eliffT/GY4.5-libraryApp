@@ -1,9 +1,11 @@
 package com.turkcell.libraryapp.entity;
 
+import com.turkcell.libraryapp.repository.BookRepository;
 import com.turkcell.libraryapp.repository.CategoryRepository;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -30,6 +32,13 @@ public class Book {
     @ManyToOne()
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
+
+    @OneToMany(mappedBy = "book")
+    private List<Loan> loans;
+
+    @OneToMany(mappedBy = "book")
+    private List<BookReservation> bookReservations;
+
 
     public Category getCategory() {
         return category;
@@ -78,4 +87,37 @@ public class Book {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public List<BookReservation> getBookReservations() {
+        return bookReservations;
+    }
+
+    public void setBookReservations(List<BookReservation> bookReservations) {
+        this.bookReservations = bookReservations;
+    }
+
 }

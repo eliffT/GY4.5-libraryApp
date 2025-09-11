@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/books")
+@RequestMapping("api/v1/publishers")
 public class PublishersController {
 
     private PublisherService publisherService;
@@ -27,8 +27,9 @@ public class PublishersController {
     public PublisherForGetDto addBookWithDto(@RequestBody PublisherForAddDto publisherForAddDto){
         return publisherService.addWithDto(publisherForAddDto);
     }
-    @GetMapping("/{id}")
-    public PublisherForGetDto getByIdWithDto(@PathVariable Integer id){
-        return publisherService.getByIdWithDto(id);
-    }
+//    @GetMapping("/{id}")
+//    public PublisherForGetDto getByIdWithDto(@PathVariable Integer id){
+//        return publisherService.getByIdWithDto(id);
+//    }
+
 }
