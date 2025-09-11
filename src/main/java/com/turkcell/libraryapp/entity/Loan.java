@@ -1,6 +1,7 @@
 package com.turkcell.libraryapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
 import jakarta.persistence.*;
 
@@ -28,6 +29,7 @@ public class Loan {
 
     @ManyToOne()
     @JoinColumn(name = "book_id")
+    @JsonIgnore
     private Book book;
 
     @OneToOne(mappedBy = "loan")
@@ -35,6 +37,7 @@ public class Loan {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Integer getId() {
