@@ -74,6 +74,8 @@ public class UserService {
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
+        response.setBookReservations(user.getBookReservations());
+        response.setLoans(user.getLoans());
         return response;
     }
 

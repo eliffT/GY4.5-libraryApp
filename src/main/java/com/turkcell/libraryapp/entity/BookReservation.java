@@ -1,5 +1,6 @@
 package com.turkcell.libraryapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.turkcell.libraryapp.entity.enumarations.ReservationStatus;
 import jakarta.persistence.*;
 import java.util.Date;
@@ -20,10 +21,12 @@ public class BookReservation {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
+    @JsonIgnore
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Integer getId() {
