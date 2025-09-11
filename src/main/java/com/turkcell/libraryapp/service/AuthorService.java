@@ -7,6 +7,7 @@ import com.turkcell.libraryapp.dto.author.response.GetByIdAuthorResponse;
 import com.turkcell.libraryapp.entity.Author;
 import com.turkcell.libraryapp.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.*;
 
@@ -49,7 +50,7 @@ public class AuthorService {
     }
 
     public GetByIdAuthorResponse getByIdAuthorResponse(Integer id){
-        Author author = authorRepository.findById(id).orElseThrow();
+        Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Bu id ile bir yazar bulunamadı."));
 
         GetByIdAuthorResponse getByIdAuthorResponse = new GetByIdAuthorResponse();
         getByIdAuthorResponse.setFirstName(author.getFirstName());
