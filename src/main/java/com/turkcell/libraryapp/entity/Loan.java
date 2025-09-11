@@ -22,6 +22,15 @@ public class Loan {
     @Column(name = "is_delivered")
     private Boolean isDelivered;
 
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    @Column(name = "book_id", nullable = false)
+    private Integer bookId;
+
+    @Column(name = "status_id", nullable = false)
+    private Integer statusId;
+
     public int getId() {
         return id;
     }

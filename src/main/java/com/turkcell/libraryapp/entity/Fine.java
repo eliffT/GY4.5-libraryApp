@@ -13,7 +13,7 @@ public class Fine {
     @Column(name = "is_paid")
     private Boolean ispaid;
 
-    private int amount;
+    private Integer amount;
 
 
     public int getId() {
@@ -36,7 +36,7 @@ public class Fine {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 }
