@@ -1,8 +1,10 @@
 package com.turkcell.libraryapp.entity;
 
+import com.turkcell.libraryapp.entity.enumarations.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -34,6 +36,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role = Role.MEMBER;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookReservation> bookReservations;
+
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loans;
 
     public User() {
         this.isActive = true;
@@ -107,5 +115,20 @@ public class User {
         this.role = role;
     }
 
+    public List<BookReservation> getBookReservations() {
+        return bookReservations;
+    }
+
+    public void setBookReservations(List<BookReservation> bookReservations) {
+        this.bookReservations = bookReservations;
+    }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
 
 }

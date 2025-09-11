@@ -17,11 +17,11 @@ public class Publisher {
     @OneToMany(mappedBy = "publisher")
     private List<Book> books;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -31,6 +31,14 @@ public class Publisher {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
 }

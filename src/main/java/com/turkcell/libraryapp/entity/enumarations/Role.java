@@ -1,4 +1,4 @@
-package com.turkcell.libraryapp.entity;
+package com.turkcell.libraryapp.entity.enumarations;
 
 public enum Role {
     // Sisteme kayıtlı kullanıcı rolleri:
