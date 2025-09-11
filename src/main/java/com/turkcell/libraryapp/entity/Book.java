@@ -23,6 +23,14 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne()
+    @JoinColumn(name = "author_id")     // FK books tablosunda - owner side
+    private Author author;
+
+    @ManyToOne()
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
+
     public Category getCategory() {
         return category;
     }

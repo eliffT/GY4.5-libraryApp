@@ -1,8 +1,9 @@
 package com.turkcell.libraryapp.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
 
-import java.util.Date;
 
 @Entity
 @Table(name="users")
@@ -18,20 +19,31 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+   // @Column(nullable = false)
+    private String password;
+
     private String email;
     private String phone;
 
-    @Column(name = "join_date")
-    private Date joinDate;
+    @CreationTimestamp      // Otomatik tarih ataması yapılır.
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "is_active")
     private Boolean isActive;
 
-    public int getId() {
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.MEMBER;
+
+    public User() {
+        this.isActive = true;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -51,6 +63,14 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -67,12 +87,8 @@ public class User {
         this.phone = phone;
     }
 
-    public Date getJoinDate() {
-        return joinDate;
-    }
-
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public Boolean getActive() {
@@ -82,5 +98,14 @@ public class User {
     public void setActive(Boolean active) {
         isActive = active;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 
 }

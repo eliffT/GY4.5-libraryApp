@@ -1,7 +1,6 @@
 package com.turkcell.libraryapp.entity;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
@@ -15,11 +14,15 @@ public class BookReservation {
     @Column(name = "reservation_date")
     private Date reservationDate;
 
-    public int getId() {
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
+
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -29,5 +32,13 @@ public class BookReservation {
 
     public void setReservationDate(Date reservationDate) {
         this.reservationDate = reservationDate;
+    }
+
+    public ReservationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
     }
 }

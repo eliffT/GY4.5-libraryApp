@@ -18,16 +18,16 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Book> Books;
 
+    public Integer getId() {
+        return id;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
 
     public List<Book> getBooks() {
         return Books;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public void setBooks(List<Book> books) {
@@ -41,4 +41,5 @@ public class Category {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
 }
