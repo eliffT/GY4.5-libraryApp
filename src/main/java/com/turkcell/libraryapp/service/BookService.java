@@ -14,12 +14,15 @@ import com.turkcell.libraryapp.repository.AuthorRepository;
 import com.turkcell.libraryapp.repository.BookRepository;
 import com.turkcell.libraryapp.repository.CategoryRepository;
 import com.turkcell.libraryapp.repository.PublisherRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Validated
 public class BookService {
 
     private BookRepository bookRepository;
@@ -68,7 +71,7 @@ public class BookService {
         return bookForGetDtoList;
     }
 
-    public BookForGetDto addWithDto(BookForAddDto bookForAddDto){
+    public BookForGetDto addWithDto(@Valid BookForAddDto bookForAddDto){
         Book book = new Book();
         book.setTitle(bookForAddDto.getTitle());
         book.setLanguage(bookForAddDto.getLanguage());
@@ -147,6 +150,74 @@ public class BookService {
 
     public void deleteBookWithById(Integer id){
         bookRepository.deleteById(id);
+    }
+
+    public List<BookForGetDto> findByLanguage(String language){
+        List<Book> bookList = bookRepository.findByLanguage(language);
+        List<BookForGetDto> bookForGetDtoList = new ArrayList<BookForGetDto>();
+        for (Book book: bookList){
+            BookForGetDto bookForGetDto = new BookForGetDto();
+            bookForGetDto.setTitle(book.getTitle());
+            bookForGetDto.setLanguage(book.getLanguage());
+            bookForGetDto.setYear(book.getYear());
+            bookForGetDto.setStock(book.getStock());
+
+            if (book.getAuthor() != null) {
+                AuthorSimpleDto authorDto = new AuthorSimpleDto();
+                authorDto.setId(book.getAuthor().getId());
+                authorDto.setFirstName(book.getAuthor().getFirstName());
+                authorDto.setLastName(book.getAuthor().getLastName());
+                bookForGetDto.setAuthor(authorDto);
+            }
+
+            if (book.getPublisher() != null) {
+                PublisherSimpleDto publisherDto = new PublisherSimpleDto();
+                publisherDto.setId(book.getPublisher().getId());
+                publisherDto.setName(book.getPublisher().getName());
+                bookForGetDto.setPublisher(publisherDto);
+            }
+
+            CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
+            categoryForGetDto.setCategoryName(book.getCategory().getCategoryName());
+            bookForGetDto.setCategoryForGetDto(categoryForGetDto);
+
+            bookForGetDtoList.add(bookForGetDto);
+        }
+        return bookForGetDtoList;
+    }
+
+    public List<BookForGetDto> highValueOfStock(){
+        List<Book> bookList = bookRepository.highValueOfStock();
+        List<BookForGetDto> bookForGetDtoList = new ArrayList<BookForGetDto>();
+        for (Book book: bookList){
+            BookForGetDto bookForGetDto = new BookForGetDto();
+            bookForGetDto.setTitle(book.getTitle());
+            bookForGetDto.setLanguage(book.getLanguage());
+            bookForGetDto.setYear(book.getYear());
+            bookForGetDto.setStock(book.getStock());
+
+            if (book.getAuthor() != null) {
+                AuthorSimpleDto authorDto = new AuthorSimpleDto();
+                authorDto.setId(book.getAuthor().getId());
+                authorDto.setFirstName(book.getAuthor().getFirstName());
+                authorDto.setLastName(book.getAuthor().getLastName());
+                bookForGetDto.setAuthor(authorDto);
+            }
+
+            if (book.getPublisher() != null) {
+                PublisherSimpleDto publisherDto = new PublisherSimpleDto();
+                publisherDto.setId(book.getPublisher().getId());
+                publisherDto.setName(book.getPublisher().getName());
+                bookForGetDto.setPublisher(publisherDto);
+            }
+
+            CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
+            categoryForGetDto.setCategoryName(book.getCategory().getCategoryName());
+            bookForGetDto.setCategoryForGetDto(categoryForGetDto);
+
+            bookForGetDtoList.add(bookForGetDto);
+        }
+        return bookForGetDtoList;
     }
 
 

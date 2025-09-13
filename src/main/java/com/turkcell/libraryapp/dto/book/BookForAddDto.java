@@ -1,17 +1,27 @@
 package com.turkcell.libraryapp.dto.book;
 
-import com.turkcell.libraryapp.entity.Category;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
 public class BookForAddDto {
+    @NotBlank
+    @Size(min = 3, max = 20)
     private String title;
+    @NotNull
     private Date year;
+    @NotNull
     private String language;
+    @Positive
     private int stock;
+    @NotNull
     private Integer categoryId;
+    @NotNull
     private Integer authorId;
+    @NotNull
     private Integer publisherId;
 
     public BookForAddDto(String title, Date year, String language, int stock, Integer categoryId) {

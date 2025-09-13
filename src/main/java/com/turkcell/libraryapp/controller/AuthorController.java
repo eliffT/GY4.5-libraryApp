@@ -5,6 +5,7 @@ import com.turkcell.libraryapp.dto.author.response.CreatedAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetAllAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetByIdAuthorResponse;
 import com.turkcell.libraryapp.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class AuthorController {
         return authorService.getAllWithDto();
     }
     @PostMapping()
-    public CreatedAuthorResponse createAuthorWithDto(@RequestBody CreateAuthorRequest createAuthorRequest){
+    public CreatedAuthorResponse createAuthorWithDto(@Valid @RequestBody CreateAuthorRequest createAuthorRequest){
         return authorService.createAuthorWithDto(createAuthorRequest);
     }
     @GetMapping("/{id}")

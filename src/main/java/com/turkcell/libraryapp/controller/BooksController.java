@@ -5,6 +5,7 @@ import com.turkcell.libraryapp.dto.book.BookForGetDto;
 import com.turkcell.libraryapp.dto.category.CategoryForAddDto;
 import com.turkcell.libraryapp.dto.category.CategoryForGetDto;
 import com.turkcell.libraryapp.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class BooksController {
         return bookService.getAllWithDto();
     }
     @PostMapping()
-    public BookForGetDto addBookWithDto(@RequestBody BookForAddDto bookForAddDto){
+    public BookForGetDto addBookWithDto(@Valid @RequestBody BookForAddDto bookForAddDto){
         return bookService.addWithDto(bookForAddDto);
     }
     @GetMapping("/{id}")
@@ -34,6 +35,15 @@ public class BooksController {
     @DeleteMapping("/{id}")
     public void deleteBookWithById(@PathVariable Integer id){
               bookService.deleteBookWithById(id);
+    }
+
+    @GetMapping("/lang/{language}")
+    public List<BookForGetDto> findByLanguage(@PathVariable String language){
+        return bookService.findByLanguage(language);
+    }
+    @GetMapping("/highstock")
+    public List<BookForGetDto> highValueOfStock(){
+        return bookService.highValueOfStock();
     }
 
 
