@@ -28,6 +28,7 @@ public class AuthorService {
             authorResponse.setId(author.getId());
             authorResponse.setFirstName(author.getFirstName());
             authorResponse.setLastName(author.getLastName());
+            //authorResponse.setBooks(null);
 
             authorResponseList.add(authorResponse);
         }

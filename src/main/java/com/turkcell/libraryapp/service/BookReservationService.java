@@ -6,7 +6,10 @@ import com.turkcell.libraryapp.dto.bookReservation.response.GetAllBookReservatio
 import com.turkcell.libraryapp.dto.bookReservation.response.GetByIdBookResevationResponse;
 import com.turkcell.libraryapp.entity.Book;
 import com.turkcell.libraryapp.entity.BookReservation;
+import com.turkcell.libraryapp.entity.User;
+import com.turkcell.libraryapp.repository.BookRepository;
 import com.turkcell.libraryapp.repository.BookReservationRepository;
+import com.turkcell.libraryapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -16,9 +19,13 @@ import java.util.List;
 @Service
 public class BookReservationService {
     private BookReservationRepository bookReservationRepository;
+    private BookRepository bookRepository;
+    private UserRepository userRepository;
 
-    public BookReservationService(BookReservationRepository bookReservationRepository) {
+    public BookReservationService(BookReservationRepository bookReservationRepository, BookRepository bookRepository, UserRepository userRepository) {
         this.bookReservationRepository = bookReservationRepository;
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
     public List<GetAllBookReservationResponse> getAllWithDto(){
@@ -34,9 +41,16 @@ public class BookReservationService {
         }
         return getAllBookReservationResponseList;
     }
+
     public CreatedBookResevationResponse createBookReservationWithDto(CreateBookReservationRequest createBookReservationRequest){
         BookReservation bookReservation = new BookReservation();
         bookReservation.setReservationDate(createBookReservationRequest.getReservationDate());
+
+        Book book = bookRepository.findById(createBookReservationRequest.getBookId()).orElseThrow();
+        User user = userRepository.findById(createBookReservationRequest.getUserId()).orElseThrow();
+
+        bookReservation.setBook(book);
+        bookReservation.setUser(user);
 
         BookReservation bookReservationSaved = bookReservationRepository.save(bookReservation);
 
@@ -46,6 +60,7 @@ public class BookReservationService {
 
         return createdBookResevationResponse;
     }
+
     public GetByIdBookResevationResponse getByIdBookResevationResponse(Integer id){
         BookReservation bookReservation = bookReservationRepository.findById(id).orElseThrow(() -> new NotFoundException("Bu id ile bir kitap rezervasyonu bulunamadı."));
 

@@ -18,7 +18,7 @@ import java.util.concurrent.Flow;
 public class PublisherService {
     private PublisherRepository publisherRepository;
 
-    public PublisherService(CategoryRepository categoryRepository) {
+    public PublisherService(PublisherRepository publisherRepository) {
         this.publisherRepository = publisherRepository;
     }
 
@@ -27,6 +27,7 @@ public class PublisherService {
         List<PublisherForGetDto> publisherForGetDtoList = new ArrayList<PublisherForGetDto>();
         for(Publisher publisher : publisherList){
             PublisherForGetDto publisherForGetDto = new PublisherForGetDto();
+            publisherForGetDto.setId(publisher.getId());
             publisherForGetDto.setName(publisher.getName());
             publisherForGetDtoList.add(publisherForGetDto);
         }
@@ -39,8 +40,23 @@ public class PublisherService {
 
         Publisher publisherSaved = this.publisherRepository.save(publisher);
         PublisherForGetDto publisherForGetDto = new PublisherForGetDto();
+        publisherForGetDto.setId(publisherSaved.getId());
         publisherForGetDto.setName(publisherSaved.getName());
 
         return publisherForGetDto;
     }
+
+    public PublisherForGetDto getByIdWithDto(Integer id){
+        Publisher publisher = publisherRepository.findById(id).orElseThrow();
+        PublisherForGetDto publisherForGetDto = new PublisherForGetDto();
+        publisherForGetDto.setId(publisher.getId());
+        publisherForGetDto.setName(publisher.getName());
+        return publisherForGetDto;
+    }
+
+    public void deletePublisherWithById(Integer id)
+    {
+        publisherRepository.deleteById(id);
+    }
+
 }

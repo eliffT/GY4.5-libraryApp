@@ -2,7 +2,8 @@ package com.turkcell.libraryapp.dto.book;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.turkcell.libraryapp.dto.category.CategoryForGetDto;
-import com.turkcell.libraryapp.entity.Category;
+import com.turkcell.libraryapp.dto.author.AuthorSimpleDto;
+import com.turkcell.libraryapp.dto.publisher.PublisherSimpleDto;
 
 import java.util.Date;
 
@@ -12,6 +13,8 @@ public class BookForGetDto {
     private String language;
     private int stock;
     private CategoryForGetDto categoryForGetDto;
+    private AuthorSimpleDto author;
+    private PublisherSimpleDto publisher;
 
     public BookForGetDto(CategoryForGetDto categoryForGetDto, int stock, String language, Date year, String title) {
         this.categoryForGetDto = categoryForGetDto;
@@ -62,5 +65,21 @@ public class BookForGetDto {
 
     public void setCategoryForGetDto(CategoryForGetDto categoryForGetDto) {
         this.categoryForGetDto = categoryForGetDto;
+    }
+
+    public AuthorSimpleDto getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AuthorSimpleDto author) {
+        this.author = author;
+    }
+
+    public PublisherSimpleDto getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(PublisherSimpleDto publisher) {
+        this.publisher = publisher;
     }
 }

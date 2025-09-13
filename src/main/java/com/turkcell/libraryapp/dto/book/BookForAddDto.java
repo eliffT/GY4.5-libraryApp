@@ -11,6 +11,8 @@ public class BookForAddDto {
     private String language;
     private int stock;
     private Integer categoryId;
+    private Integer authorId;
+    private Integer publisherId;
 
     public BookForAddDto(String title, Date year, String language, int stock, Integer categoryId) {
         this.title = title;
@@ -60,5 +62,21 @@ public class BookForAddDto {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Integer authorId) {
+        this.authorId = authorId;
+    }
+
+    public Integer getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(Integer publisherId) {
+        this.publisherId = publisherId;
     }
 }

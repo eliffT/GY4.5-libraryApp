@@ -1,7 +1,5 @@
 package com.turkcell.libraryapp.entity;
 
-import com.turkcell.libraryapp.repository.BookRepository;
-import com.turkcell.libraryapp.repository.CategoryRepository;
 import jakarta.persistence.*;
 
 import java.util.Date;

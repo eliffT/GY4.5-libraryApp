@@ -32,7 +32,7 @@ public class Loan {
     @JsonIgnore
     private Book book;
 
-    @OneToOne(mappedBy = "loan")
+    @OneToOne(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
     private Fine fine;
 
     @ManyToOne()
