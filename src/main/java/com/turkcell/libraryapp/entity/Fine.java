@@ -11,7 +11,7 @@ public class Fine {
     private Integer id;
 
     @Column(name = "is_paid")
-    private Boolean ispaid;
+    private Boolean isPaid;
 
     private Integer amount;
 
@@ -29,12 +29,12 @@ public class Fine {
         this.id = id;
     }
 
-    public Boolean getIspaid() {
-        return ispaid;
+    public Boolean getIsPaid() {
+        return isPaid;
     }
 
-    public void setIspaid(Boolean ispaid) {
-        this.ispaid = ispaid;
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
     }
 
     public int getAmount() {

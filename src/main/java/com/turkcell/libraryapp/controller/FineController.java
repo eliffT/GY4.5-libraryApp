@@ -1,11 +1,10 @@
 package com.turkcell.libraryapp.controller;
 
-import com.turkcell.libraryapp.dto.fine.FineForAddDto;
-import com.turkcell.libraryapp.dto.fine.FineForGetDto;
+import com.turkcell.libraryapp.dto.fine.request.FineRequest;
+import com.turkcell.libraryapp.dto.fine.response.FineResponse;
 import com.turkcell.libraryapp.service.FineService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/v1/fines")
@@ -17,28 +16,27 @@ public class FineController {
         this.fineService = fineService;
     }
 
-    @GetMapping //+
-    public List<FineForGetDto> getAll() {
+    @PostMapping
+    public FineResponse add(@RequestBody FineRequest request) {
+        return fineService.addWithDto(request);
+    }
+
+    @GetMapping
+    public List<FineResponse> getAll() {
         return fineService.getAllWithDto();
     }
 
-    @GetMapping("/{id}") //+
-    public FineForGetDto getById(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public FineResponse getById(@PathVariable Integer id) {
         return fineService.getByIdWithDto(id);
     }
 
-
-    @PutMapping("/{id}") //+
-    public FineForGetDto update(@PathVariable Integer id, @RequestBody FineForAddDto request) {
+    @PutMapping("/{id}")
+    public FineResponse update(@PathVariable Integer id, @RequestBody FineRequest request) {
         return fineService.updateWithDto(id, request);
     }
 
-    //{
-    //  "isPaid": false,
-    //  "amount": 290
-    //}
-
-    @DeleteMapping("/{id}") //+
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         fineService.deleteById(id);
     }

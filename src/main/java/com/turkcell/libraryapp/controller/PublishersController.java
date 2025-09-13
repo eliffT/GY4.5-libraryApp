@@ -27,9 +27,14 @@ public class PublishersController {
     public PublisherForGetDto addBookWithDto(@RequestBody PublisherForAddDto publisherForAddDto){
         return publisherService.addWithDto(publisherForAddDto);
     }
-//    @GetMapping("/{id}")
-//    public PublisherForGetDto getByIdWithDto(@PathVariable Integer id){
-//        return publisherService.getByIdWithDto(id);
-//    }
+    @GetMapping("/{id}")
+    public PublisherForGetDto getByIdWithDto(@PathVariable Integer id){
+        return publisherService.getByIdWithDto(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePublisherWithById(@PathVariable Integer id){
+        publisherService.deletePublisherWithById(id);
+    }
 
 }

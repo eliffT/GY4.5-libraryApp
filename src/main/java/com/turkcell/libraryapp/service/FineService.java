@@ -1,9 +1,11 @@
 package com.turkcell.libraryapp.service;
 
-import com.turkcell.libraryapp.dto.fine.FineForAddDto;
-import com.turkcell.libraryapp.dto.fine.FineForGetDto;
+import com.turkcell.libraryapp.dto.fine.request.FineRequest;
+import com.turkcell.libraryapp.dto.fine.response.FineResponse;
 import com.turkcell.libraryapp.entity.Fine;
+import com.turkcell.libraryapp.entity.Loan;
 import com.turkcell.libraryapp.repository.FineRepository;
+import com.turkcell.libraryapp.repository.LoanRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,53 +14,63 @@ import java.util.List;
 public class FineService {
 
     private final FineRepository fineRepository;
+    private final LoanRepository loanRepository;
 
-    public FineService(FineRepository fineRepository) {
+    public FineService(FineRepository fineRepository, LoanRepository loanRepository) {
         this.fineRepository = fineRepository;
+        this.loanRepository = loanRepository;
     }
 
+    public FineResponse addWithDto(FineRequest request) {
+        Fine fine = new Fine();
+        fine.setIsPaid(request.getIsPaid());
+        fine.setAmount(request.getAmount());
 
-    public List<FineForGetDto> getAllWithDto() {
+        Loan loan = loanRepository.findById(request.getLoanId()).orElseThrow();
+        fine.setLoan(loan);
+
+        Fine saved = fineRepository.save(fine);
+        return convertToDto(saved);
+    }
+
+    public List<FineResponse> getAllWithDto() {
         List<Fine> fineList = fineRepository.findAll();
-        List<FineForGetDto> response = new ArrayList<>();
+        List<FineResponse> response = new ArrayList<>();
 
         for (Fine fine : fineList) {
-            FineForGetDto dto = new FineForGetDto();
-            dto.setId(fine.getId());
-            dto.setIsPaid(fine.getIspaid());
-            dto.setAmount(fine.getAmount());
-            response.add(dto);
+            response.add(convertToDto(fine));
         }
         return response;
     }
 
-    public FineForGetDto getByIdWithDto(Integer id) {
+    public FineResponse getByIdWithDto(Integer id) {
         Fine fine = fineRepository.findById(id).orElseThrow();
-
-        FineForGetDto dto = new FineForGetDto();
-        dto.setId(fine.getId());
-        dto.setIsPaid(fine.getIspaid());
-        dto.setAmount(fine.getAmount());
-        return dto;
+        return convertToDto(fine);
     }
 
-    public FineForGetDto updateWithDto(Integer id, FineForAddDto request) {
+    public FineResponse updateWithDto(Integer id, FineRequest request) {
         Fine fine = fineRepository.findById(id).orElseThrow();
 
-        fine.setIspaid(request.getIsPaid());
+        fine.setIsPaid(request.getIsPaid());
         fine.setAmount(request.getAmount());
 
+        Loan loan = loanRepository.findById(request.getLoanId()).orElseThrow();
+        fine.setLoan(loan);
+
         Fine updated = fineRepository.save(fine);
-
-        FineForGetDto dto = new FineForGetDto();
-        dto.setId(updated.getId());
-        dto.setIsPaid(updated.getIspaid());
-        dto.setAmount(updated.getAmount());
-        return dto;
+        return convertToDto(updated);
     }
-
 
     public void deleteById(Integer id) {
         fineRepository.deleteById(id);
+    }
+
+    private FineResponse convertToDto(Fine fine) {
+        FineResponse dto = new FineResponse();
+        dto.setId(fine.getId());
+        dto.setIsPaid(fine.getIsPaid());
+        dto.setAmount(fine.getAmount());
+        dto.setLoanId(fine.getLoan() != null ? fine.getLoan().getId() : null);
+        return dto;
     }
 }

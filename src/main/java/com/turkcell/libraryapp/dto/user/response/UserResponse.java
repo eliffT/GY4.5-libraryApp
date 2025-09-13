@@ -3,7 +3,9 @@ package com.turkcell.libraryapp.dto.user.response;
 
 import com.turkcell.libraryapp.entity.BookReservation;
 import com.turkcell.libraryapp.entity.Loan;
+import com.turkcell.libraryapp.entity.enumarations.Role;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserResponse {
@@ -13,6 +15,9 @@ public class UserResponse {
     private String lastName;
     private String email;
     private String phone;
+    private Role role;
+    private Boolean active;
+    private LocalDateTime createdAt;
     private List<BookReservation> bookReservations;
     private List<Loan> loans;
 
@@ -83,5 +88,29 @@ public class UserResponse {
 
     public void setLoans(List<Loan> loans) {
         this.loans = loans;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

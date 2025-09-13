@@ -25,4 +25,13 @@ public class CategoriesController {
     public CategoryForGetDto addCategoryWithDto(@RequestBody CategoryForAddDto categoryForAddDto){
         return categoryService.addWithDto(categoryForAddDto);
     }
+    @GetMapping("/{id}")
+    public CategoryForGetDto getByIdWithDto(@PathVariable Integer id){
+        return categoryService.getByIdWithDto(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCategoryWithById(@PathVariable Integer id){
+        categoryService.deleteCategoryWithById(id);
+    }
 }

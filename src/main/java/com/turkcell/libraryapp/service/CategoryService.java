@@ -37,4 +37,17 @@ public class CategoryService {
         categoryForGetDto.setCategoryName(categorySaved.getCategoryName());
         return categoryForGetDto;
     }
+
+    public CategoryForGetDto getByIdWithDto(Integer id)
+    {
+        Category category = categoryRepository.findById(id).orElseThrow();
+        CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
+        categoryForGetDto.setCategoryName(category.getCategoryName());
+        return categoryForGetDto;
+    }
+
+    public void deleteCategoryWithById(Integer id)
+    {
+        categoryRepository.deleteById(id);
+    }
 }

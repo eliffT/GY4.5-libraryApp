@@ -23,7 +23,7 @@ public class UserService {
     public UserResponse createUser(UserRequest request) {
         // DTO - Entity
         User user = new User();
-        user.setName(request.getName());
+        user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
@@ -32,7 +32,7 @@ public class UserService {
         // Entity - DTO
         UserResponse response = new UserResponse();
         response.setId(user.getId());
-        response.setName(user.getName());
+        response.setName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
@@ -44,7 +44,7 @@ public class UserService {
         User updateUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-        updateUser.setName(request.getName());
+        updateUser.setFirstName(request.getFirstName());
         updateUser.setLastName(request.getLastName());
         updateUser.setEmail(request.getEmail());
         updateUser.setPhone(request.getPhone());
@@ -52,10 +52,13 @@ public class UserService {
 
         UserResponse response = new UserResponse();
         response.setId(updateUser.getId());
-        response.setName(updateUser.getName());
+        response.setName(updateUser.getFirstName());
         response.setLastName(updateUser.getLastName());
         response.setEmail(updateUser.getEmail());
         response.setPhone(updateUser.getPhone());
+        response.setRole(updateUser.getRole());
+        response.setActive(updateUser.getActive());
+        response.setCreatedAt(updateUser.getCreatedAt());
         return response;
     }
 
@@ -70,10 +73,15 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("User not found"));
         UserResponse response = new UserResponse();
         response.setId(user.getId());
-        response.setName(user.getName());
+        response.setName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
+        response.setRole(user.getRole());
+        response.setActive(user.getActive());
+        response.setCreatedAt(user.getCreatedAt());
+        //response.setBookReservations(null);
+        //response.setLoans(null);
         response.setBookReservations(user.getBookReservations());
         response.setLoans(user.getLoans());
         return response;
@@ -86,10 +94,13 @@ public class UserService {
         for (User user : users) {
             UserResponse response = new UserResponse();
             response.setId(user.getId());
-            response.setName(user.getName());
+            response.setName(user.getFirstName());
             response.setLastName(user.getLastName());
             response.setEmail(user.getEmail());
             response.setPhone(user.getPhone());
+            response.setRole(user.getRole());
+            response.setActive(user.getActive());
+            response.setCreatedAt(user.getCreatedAt());
             userResponseList.add(response);
         }
         return userResponseList;
