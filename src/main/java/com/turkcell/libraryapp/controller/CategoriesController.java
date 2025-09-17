@@ -3,6 +3,7 @@ package com.turkcell.libraryapp.controller;
 import com.turkcell.libraryapp.dto.category.CategoryForAddDto;
 import com.turkcell.libraryapp.dto.category.CategoryForGetDto;
 import com.turkcell.libraryapp.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/categories")
 public class CategoriesController {
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoriesController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -22,7 +23,7 @@ public class CategoriesController {
     }
 
    @PostMapping()
-    public CategoryForGetDto addCategoryWithDto(@RequestBody CategoryForAddDto categoryForAddDto){
+    public CategoryForGetDto addCategoryWithDto(@Valid @RequestBody CategoryForAddDto categoryForAddDto){
         return categoryService.addWithDto(categoryForAddDto);
     }
     @GetMapping("/{id}")
