@@ -11,7 +11,7 @@ import java.util.List;
 public class UserResponse {
 
     private Integer id;
-    private String name;
+    private String firstName;
     private String lastName;
     private String email;
     private String phone;
@@ -24,9 +24,9 @@ public class UserResponse {
     public UserResponse() {
     }
 
-    public UserResponse(Integer id, String name, String lastName, String email, String phone, List<BookReservation> bookReservations, List<Loan> loans) {
+    public UserResponse(Integer id, String firstName, String lastName, String email, String phone, List<BookReservation> bookReservations, List<Loan> loans) {
         this.id = id;
-        this.name = name;
+        this.firstName= firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
@@ -42,12 +42,12 @@ public class UserResponse {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {

@@ -1,5 +1,6 @@
 package com.turkcell.libraryapp.controller;
 
+import com.turkcell.libraryapp.dto.loan.TotalLoanDto;
 import com.turkcell.libraryapp.dto.user.request.UserRequest;
 import com.turkcell.libraryapp.dto.user.response.UserResponse;
 import com.turkcell.libraryapp.service.UserService;
@@ -42,6 +43,11 @@ public class UserController {
     @GetMapping("/list-all")
     public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @GetMapping("fines/{id}")
+    public List<UserResponse> getFinesByMember(@PathVariable Integer id, @RequestParam boolean isPaid){
+        return userService.getFinesByUserId(id, isPaid);
     }
 
 }
