@@ -31,13 +31,9 @@ public class FineBusinessRules {
     public double calculateLateFee(LocalDate dueDate, LocalDate returnDate){
         if(returnDate.isAfter(dueDate)){
             long daysLate = ChronoUnit.DAYS.between(dueDate, returnDate);
-            double fine = 0;
-            for(int i = 1; i <= daysLate; i++){
-                fine += i * DAILY_FINE_AMOUNT;
-            }
-            return fine;
+            return daysLate * DAILY_FINE_AMOUNT;
         }
-        return 0;
+        return 0.0;
     }
 
 

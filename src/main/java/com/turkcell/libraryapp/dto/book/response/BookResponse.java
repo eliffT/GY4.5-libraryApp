@@ -12,18 +12,18 @@ public class BookResponse {
     private String language;
     private int availableCopies;
     private int totalCopies;
-    private CategoryResponse categoryName;
+    private CategoryResponse category;
     private PublisherResponse publisher;
 
     public BookResponse(Integer id, String title, LocalDate year, String language, int availableCopies,
-                        int totalCopies, CategoryResponse categoryName, PublisherResponse publisher) {
+                        int totalCopies, CategoryResponse category, PublisherResponse publisher) {
         this.id = id;
         this.title = title;
         this.year = year;
         this.language = language;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
-        this.categoryName = categoryName;
+        this.category = category;
         this.publisher = publisher;
     }
 
@@ -78,12 +78,12 @@ public class BookResponse {
         this.totalCopies = totalCopies;
     }
 
-    public CategoryResponse getCategoryName() {
-        return categoryName;
+    public CategoryResponse getCategory() {
+        return category;
     }
 
-    public void setCategoryName(CategoryResponse categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(CategoryResponse category) {
+        this.category = category;
     }
 
     public PublisherResponse getPublisher() {

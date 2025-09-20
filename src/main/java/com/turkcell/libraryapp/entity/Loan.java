@@ -2,7 +2,7 @@ package com.turkcell.libraryapp.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -34,7 +34,6 @@ public class Loan {
     private Book book;
 
     @OneToMany(mappedBy = "loan")
-    @JsonIgnore
     private List<Fine> fineList;
 
     @ManyToOne()

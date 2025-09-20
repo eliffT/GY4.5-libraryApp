@@ -1,12 +1,7 @@
 package com.turkcell.libraryapp.dto.user.response;
 
 
-import com.turkcell.libraryapp.entity.BookReservation;
-import com.turkcell.libraryapp.entity.Loan;
-import com.turkcell.libraryapp.entity.enumarations.Role;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import com.turkcell.libraryapp.entity.enumList.Role;
 
 public class UserResponse {
 

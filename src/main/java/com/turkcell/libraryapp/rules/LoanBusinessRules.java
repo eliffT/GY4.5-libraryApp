@@ -3,10 +3,8 @@ package com.turkcell.libraryapp.rules;
 import com.turkcell.libraryapp.entity.Book;
 import com.turkcell.libraryapp.entity.Loan;
 import com.turkcell.libraryapp.entity.User;
-import com.turkcell.libraryapp.entity.enumarations.BookStatus;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
-import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
-import com.turkcell.libraryapp.repository.FineRepository;
+import com.turkcell.libraryapp.entity.enumList.BookStatus;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
 import com.turkcell.libraryapp.repository.LoanRepository;
 import org.springframework.stereotype.Component;
 

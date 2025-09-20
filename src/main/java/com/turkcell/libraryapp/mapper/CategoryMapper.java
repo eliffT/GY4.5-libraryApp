@@ -12,9 +12,11 @@ import java.util.List;
 public interface CategoryMapper {
 
     @Mapping(target="categoryId", source = "category.id")
+    @Mapping(target="categoryName", source = "category.categoryName")
     CategoryResponse categoryToCategoryResponse(Category category);
     Category categoryRequestToCategory(CategoryRequest categoryRequest);
     @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target="categoryName", source = "category.categoryName")
     List<CategoryResponse> categoryToCategoryResponseList(List<Category> categoryList);
 
 }

@@ -55,9 +55,9 @@ public class UserController {
         return userService.changeUserStatus(id,value);
     }
 
-//    @GetMapping("/members/{id}")
-//    public UserResponse getUserByIdHasFine(@PathVariable Integer id) {
-//        return userService.getUserByIdHasFine(id);
-//    }
+    @GetMapping("/{id}/fines")
+    public UserResponse getUserByIdHasFine(@PathVariable Integer id, @RequestParam boolean isPaid) {
+        return userService.getUserByIdHasFine(id, isPaid);
+    }
 
 }

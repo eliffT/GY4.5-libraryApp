@@ -6,7 +6,7 @@ import com.turkcell.libraryapp.entity.Book;
 import com.turkcell.libraryapp.entity.Fine;
 import com.turkcell.libraryapp.entity.Loan;
 import com.turkcell.libraryapp.entity.User;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
 import com.turkcell.libraryapp.mapper.LoanMapper;
 import com.turkcell.libraryapp.repository.BookRepository;
 import com.turkcell.libraryapp.repository.FineRepository;
@@ -91,6 +91,7 @@ public class LoanService {
             fineRepository.save(fine);
 
             loan.setStatus(LoanStatus.LATE);
+            loan.getFineList().add(fine);
         }else {
             loan.setStatus(LoanStatus.RETURNED);
         }

@@ -1,7 +1,7 @@
 package com.turkcell.libraryapp.repository;
 
 import com.turkcell.libraryapp.entity.Loan;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

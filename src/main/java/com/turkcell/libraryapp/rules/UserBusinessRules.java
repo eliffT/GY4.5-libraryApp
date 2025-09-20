@@ -1,7 +1,7 @@
 package com.turkcell.libraryapp.rules;
 
 import com.turkcell.libraryapp.entity.User;
-import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
+import com.turkcell.libraryapp.entity.enumList.MembershipLevel;
 import com.turkcell.libraryapp.repository.UserRepository;
 import org.springframework.stereotype.Component;
 import org.webjars.NotFoundException;

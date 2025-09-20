@@ -1,7 +1,7 @@
 package com.turkcell.libraryapp.entity;
 
-import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
-import com.turkcell.libraryapp.entity.enumarations.Role;
+import com.turkcell.libraryapp.entity.enumList.MembershipLevel;
+import com.turkcell.libraryapp.entity.enumList.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;

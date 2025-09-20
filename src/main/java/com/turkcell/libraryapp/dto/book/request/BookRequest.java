@@ -16,7 +16,7 @@ public class BookRequest {
     private String language;
     @Min(0)
     private int totalCopies;
-    @Positive
+    @PositiveOrZero
     private int availableCopies;
     @NotNull
     private Integer categoryId;

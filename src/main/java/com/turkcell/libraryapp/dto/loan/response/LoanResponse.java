@@ -3,7 +3,7 @@ package com.turkcell.libraryapp.dto.loan.response;
 import com.turkcell.libraryapp.dto.book.response.BookResponse;
 import com.turkcell.libraryapp.dto.fine.response.FineResponse;
 import com.turkcell.libraryapp.dto.user.response.UserResponse;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,13 +17,12 @@ public class LoanResponse {
     private LoanStatus status;
     private UserResponse user;
     private BookResponse book;
-    private List<FineResponse> fines;
 
     public LoanResponse() {
     }
 
     public LoanResponse(Integer id, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, LoanStatus status,
-                        UserResponse user, BookResponse book, List<FineResponse> fines) {
+                        UserResponse user, BookResponse book) {
         this.id = id;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
@@ -31,7 +30,7 @@ public class LoanResponse {
         this.status = status;
         this.user = user;
         this.book = book;
-        this.fines = fines;
+
     }
 
     public Integer getId() {
@@ -88,14 +87,6 @@ public class LoanResponse {
 
     public void setBook(BookResponse book) {
         this.book = book;
-    }
-
-    public List<FineResponse> getFines() {
-        return fines;
-    }
-
-    public void setFines(List<FineResponse> fines) {
-        this.fines = fines;
     }
 
 }
