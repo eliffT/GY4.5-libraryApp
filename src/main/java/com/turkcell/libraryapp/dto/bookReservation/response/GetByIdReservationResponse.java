@@ -2,13 +2,13 @@ package com.turkcell.libraryapp.dto.bookReservation.response;
 
 import java.util.Date;
 
-public class UpdatedBookResevationResponse {
+public class GetByIdReservationResponse {
     private Date reservationDate;
 
-    public UpdatedBookResevationResponse() {
+    public GetByIdReservationResponse() {
     }
 
-    public UpdatedBookResevationResponse(Date reservationDate) {
+    public GetByIdReservationResponse(Date reservationDate) {
         this.reservationDate = reservationDate;
     }
 

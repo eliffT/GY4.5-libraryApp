@@ -1,11 +1,22 @@
 package com.turkcell.libraryapp.dto.user.request;
 
 
+import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class UserRequest {
 
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+
+    @Email(message = "Invalid email format. Make sure your email contains '@' and a domain")
     private String email;
+
+    @Pattern(regexp = "^[0-9]{11}$", message = "Invalid phone number format")
     private String phone;
 
     public UserRequest() {
@@ -49,4 +60,5 @@ public class UserRequest {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 }

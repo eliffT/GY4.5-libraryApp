@@ -27,42 +27,24 @@ public class AuthorService {
         this.authorMapper = authorMapper;
     }
 
-    public List<GetAllAuthorResponse> getAllWithDto(){
+    public List<GetAllAuthorResponse> getAllAuthors(){
         List<Author> authorList = authorRepository.findAll();
-        List<GetAllAuthorResponse> authorResponseList = new ArrayList<GetAllAuthorResponse>();
-
-        for(Author author: authorList){
-            GetAllAuthorResponse authorResponse = new GetAllAuthorResponse();
-            authorResponse.setId(author.getId());
-            authorResponse.setFirstName(author.getFirstName());
-            authorResponse.setLastName(author.getLastName());
-            //authorResponse.setBooks(null);
-
-            authorResponseList.add(authorResponse);
-        }
-        return authorResponseList;
+        return authorMapper.authorToAuthorResponseList(authorList);
     }
 
-    public CreatedAuthorResponse createAuthorWithDto(@Valid CreateAuthorRequest createAuthorRequest){
-
+    public CreatedAuthorResponse createAuthor(@Valid CreateAuthorRequest createAuthorRequest){
         AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
         Author author = INSTANCE.createAuthorRequestToAuthor(createAuthorRequest);
         this.authorRepository.save(author);
         return INSTANCE.authorToCreatedAuthorResponse(author);
-
     }
 
-    public GetByIdAuthorResponse getByIdAuthorResponse(Integer id){
-        Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Bu id ile bir yazar bulunamadı."));
-
-        GetByIdAuthorResponse getByIdAuthorResponse = new GetByIdAuthorResponse();
-        getByIdAuthorResponse.setFirstName(author.getFirstName());
-        getByIdAuthorResponse.setLastName(author.getLastName());
-
-        return getByIdAuthorResponse;
+    public GetByIdAuthorResponse getAuthorById(Integer id){
+        Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("No author found with this id."));
+        return authorMapper.authorToGetByIdAuthorResponse(author);
     }
 
-    public void deleteAuthorWithById(Integer id){
+    public void deleteAuthor(Integer id){
         authorRepository.deleteById(id);
     }
 }

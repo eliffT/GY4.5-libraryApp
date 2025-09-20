@@ -1,26 +1,31 @@
 package com.turkcell.libraryapp.dto.bookReservation.request;
 
-import java.util.Date;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 
-public class CreateBookReservationRequest {
-    private Date reservationDate;
+public class CreateReservationRequest {
+
+    @NotNull
+    private LocalDate reservationDate;
+    @NotNull
     private Integer userId;
+    @NotNull
     private Integer bookId;
 
-    public CreateBookReservationRequest() {
+    public CreateReservationRequest() {
     }
 
-    public CreateBookReservationRequest(Date reservationDate, Integer userId, Integer bookId) {
+    public CreateReservationRequest(LocalDate reservationDate, Integer userId, Integer bookId) {
         this.reservationDate = reservationDate;
         this.userId = userId;
         this.bookId = bookId;
     }
 
-    public Date getReservationDate() {
+    public LocalDate getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(Date reservationDate) {
+    public void setReservationDate(LocalDate reservationDate) {
         this.reservationDate = reservationDate;
     }
 

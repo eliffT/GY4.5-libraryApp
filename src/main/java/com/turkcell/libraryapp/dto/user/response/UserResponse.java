@@ -11,27 +11,21 @@ import java.util.List;
 public class UserResponse {
 
     private Integer id;
-    private String name;
+    private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private Role role;
-    private Boolean active;
-    private LocalDateTime createdAt;
-    private List<BookReservation> bookReservations;
-    private List<Loan> loans;
 
     public UserResponse() {
     }
 
-    public UserResponse(Integer id, String name, String lastName, String email, String phone, List<BookReservation> bookReservations, List<Loan> loans) {
+    public UserResponse(Integer id, String firstName, String lastName, String email, String phone) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.bookReservations = bookReservations;
-        this.loans = loans;
     }
 
     public Integer getId() {
@@ -42,12 +36,12 @@ public class UserResponse {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -74,22 +68,6 @@ public class UserResponse {
         this.phone = phone;
     }
 
-    public List<BookReservation> getBookReservations() {
-        return bookReservations;
-    }
-
-    public void setBookReservations(List<BookReservation> bookReservations) {
-        this.bookReservations = bookReservations;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -98,19 +76,4 @@ public class UserResponse {
         this.role = role;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

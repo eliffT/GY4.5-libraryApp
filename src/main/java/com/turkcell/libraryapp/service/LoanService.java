@@ -1,17 +1,23 @@
 package com.turkcell.libraryapp.service;
-import com.turkcell.libraryapp.dto.book.BookForGetDto;
 import com.turkcell.libraryapp.dto.loan.request.LoanRequest;
+import com.turkcell.libraryapp.dto.loan.request.LoanReturnRequest;
 import com.turkcell.libraryapp.dto.loan.response.LoanResponse;
-import com.turkcell.libraryapp.dto.user.response.UserResponse;
 import com.turkcell.libraryapp.entity.Book;
+import com.turkcell.libraryapp.entity.Fine;
 import com.turkcell.libraryapp.entity.Loan;
 import com.turkcell.libraryapp.entity.User;
 import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
+import com.turkcell.libraryapp.mapper.LoanMapper;
 import com.turkcell.libraryapp.repository.BookRepository;
+import com.turkcell.libraryapp.repository.FineRepository;
 import com.turkcell.libraryapp.repository.LoanRepository;
 import com.turkcell.libraryapp.repository.UserRepository;
+import com.turkcell.libraryapp.rules.FineBusinessRules;
+import com.turkcell.libraryapp.rules.LoanBusinessRules;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+import org.webjars.NotFoundException;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,129 +26,115 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final LoanMapper loanMapper;
+    private final LoanBusinessRules loanBusinessRules;
+    private final FineBusinessRules fineBusinessRules;
+    private final FineRepository fineRepository;
 
-    public LoanService(LoanRepository loanRepository, BookRepository bookRepository, UserRepository userRepository) {
+    public LoanService(LoanRepository loanRepository, BookRepository bookRepository,
+                       UserRepository userRepository, LoanMapper loanMapper, LoanBusinessRules loanBusinessRules,
+                       FineBusinessRules fineBusinessRules, FineRepository fineRepository) {
         this.loanRepository = loanRepository;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.loanMapper = loanMapper;
+        this.loanBusinessRules = loanBusinessRules;
+        this.fineBusinessRules = fineBusinessRules;
+        this.fineRepository = fineRepository;
     }
 
-    public LoanResponse addWithDto(LoanRequest request) {
-        Loan loan = new Loan();
-        loan.setBorrowDate(request.getBorrowDate());
-        loan.setDueDate(request.getDueDate());
-        loan.setReturnDate(request.getReturnDate());
-        loan.setStatus(request.getStatus());
-        //loan.setStatus(request.getStatus() != null ? request.getStatus() : LoanStatus.BORROWED);
+    public LoanResponse createLoan(LoanRequest request) {
 
+        // Get User and Book
+        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
+        Book book = bookRepository.findById(request.getBookId()).orElseThrow(() -> new NotFoundException("Book not found"));
 
-        Book book = bookRepository.findById(request.getBookId()).orElseThrow();
-        User user = userRepository.findById(request.getUserId()).orElseThrow();
+        // Business Rule
+        loanBusinessRules.loanRules(book, user);
 
+        // DTO - Entity
+        Loan loan = loanMapper.LoanRequestToLoan(request);
+
+        // Loan Operations
         loan.setBook(book);
         loan.setUser(user);
+        loan.setBorrowDate(LocalDate.now());
+        loan.setDueDate(loanBusinessRules.calculateDueDate(user, loan.getBorrowDate()));
+        loan.setStatus(LoanStatus.BORROWED);
 
-        Loan saved = loanRepository.save(loan);
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
 
-        return convertToDto(saved);
+        loanRepository.save(loan);
+        bookRepository.save(book);
+
+        return loanMapper.loanToLoanResponse(loan);
     }
 
-    public List<LoanResponse> getAllWithDto() {
-        List<Loan> loans = loanRepository.findAll();
-        List<LoanResponse> result = new ArrayList<>();
+    public LoanResponse returnLoan(LoanReturnRequest request){
 
-        for (Loan loan : loans) {
-            result.add(convertToDto(loan));
+        Loan loan = loanRepository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException("Loan not found"));
+
+        // Loan durumunun iade edilebilir olup olmadığını kontrol edilir
+        loanBusinessRules.validateLoanIsReturnable(loan);
+
+        loan.setReturnDate(LocalDate.now());
+
+        // Gecikme ücreti hesaplanır
+        double fineAmount = fineBusinessRules.calculateLateFee(loan.getDueDate(), loan.getReturnDate());
+
+        if (fineAmount > 0) {
+            Fine fine = new Fine();
+            fine.setLoan(loan);
+            fine.setAmount(fineAmount);
+            fine.setPaid(false);
+            fineRepository.save(fine);
+
+            loan.setStatus(LoanStatus.LATE);
+        }else {
+            loan.setStatus(LoanStatus.RETURNED);
         }
-        return result;
+
+        Book book = loan.getBook();
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+
+        loanRepository.save(loan);
+        bookRepository.save(book);
+
+        return loanMapper.loanToLoanResponse(loan);
     }
 
-    public LoanResponse getByIdWithDto(Integer id) {
-        Loan loan = loanRepository.findById(id).orElseThrow();
-        return convertToDto(loan);
+    public List<LoanResponse> getAllLoans() {
+        return loanMapper.loanToLoanResponsesList(loanRepository.findAll());
+
     }
 
-    public LoanResponse updateWithDto(Integer id, LoanRequest request) {
+    public LoanResponse getLoanById(Integer id) {
         Loan loan = loanRepository.findById(id).orElseThrow();
+        return loanMapper.loanToLoanResponse(loan);
+    }
 
-        loan.setBorrowDate(request.getBorrowDate());
-        loan.setDueDate(request.getDueDate());
-        loan.setReturnDate(request.getReturnDate());
-        loan.setStatus(request.getStatus());
-        //loan.setStatus(request.getStatus() != null ? request.getStatus() : LoanStatus.BORROWED);
-
+    public LoanResponse updateLoan(Integer id, LoanRequest request) {
+        Loan loan = loanRepository.findById(id).orElseThrow();
 
         Book book = bookRepository.findById(request.getBookId()).orElseThrow();
         User user = userRepository.findById(request.getUserId()).orElseThrow();
 
         loan.setBook(book);
         loan.setUser(user);
-
 
         Loan updated = loanRepository.save(loan);
-        return convertToDto(updated);
+        return loanMapper.loanToLoanResponse(updated);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteLoan(Integer id) {
         loanRepository.deleteById(id);
     }
 
-    private LoanResponse convertToDto(Loan loan) {
-        LoanResponse dto = new LoanResponse();
-        dto.setId(loan.getId());
-        dto.setBorrowDate(loan.getBorrowDate());
-        dto.setDueDate(loan.getDueDate());
-        dto.setReturnDate(loan.getReturnDate());
-        dto.setStatus(loan.getStatus());
-
-        //loan kaydının mutlaka bir kullanıcıya bağlı olacağı garanti değil bundan dolayı,
-        //yalnızca user gerçekten varsa userdto döndür
-        if (loan.getUser() != null) {
-            UserResponse userResponse = new UserResponse();
-            userResponse.setId(loan.getUser().getId());
-            userResponse.setName(loan.getUser().getFirstName());
-            userResponse.setLastName(loan.getUser().getLastName());
-            userResponse.setEmail(loan.getUser().getEmail());
-            userResponse.setPhone(loan.getUser().getPhone());
-            userResponse.setRole(loan.getUser().getRole());
-            userResponse.setActive(loan.getUser().getActive());
-            userResponse.setCreatedAt(loan.getUser().getCreatedAt());
-            dto.setUser(userResponse);
-        }
-
-        // Loan’a bağlı kitap olmayabilir kontrol ederek var olan kitabı fto ya yolluoyurz
-        if (loan.getBook() != null) {
-            BookForGetDto bookResponse = new BookForGetDto();
-            bookResponse.setTitle(loan.getBook().getTitle());
-            bookResponse.setYear(loan.getBook().getYear());
-            bookResponse.setLanguage(loan.getBook().getLanguage());
-            bookResponse.setStock(loan.getBook().getStock());
-
-            if (loan.getBook().getCategory() != null) {
-                com.turkcell.libraryapp.dto.category.CategoryForGetDto categoryDto = new com.turkcell.libraryapp.dto.category.CategoryForGetDto();
-                categoryDto.setCategoryName(loan.getBook().getCategory().getCategoryName());
-                bookResponse.setCategoryForGetDto(categoryDto);
-            }
-
-            if (loan.getBook().getAuthor() != null) {
-                com.turkcell.libraryapp.dto.author.AuthorSimpleDto authorDto = new com.turkcell.libraryapp.dto.author.AuthorSimpleDto();
-                authorDto.setId(loan.getBook().getAuthor().getId());
-                authorDto.setFirstName(loan.getBook().getAuthor().getFirstName());
-                authorDto.setLastName(loan.getBook().getAuthor().getLastName());
-                bookResponse.setAuthor(authorDto);
-            }
-
-            if (loan.getBook().getPublisher() != null) {
-                com.turkcell.libraryapp.dto.publisher.PublisherSimpleDto publisherDto = new com.turkcell.libraryapp.dto.publisher.PublisherSimpleDto();
-                publisherDto.setId(loan.getBook().getPublisher().getId());
-                publisherDto.setName(loan.getBook().getPublisher().getName());
-                bookResponse.setPublisher(publisherDto);
-            }
-
-            dto.setBook(bookResponse);
-        }
-
-        return dto;
+    public List<LoanResponse> getLoansByUserIdAndStatusIn(Integer userId, String status) {
+        List<LoanStatus> loanStatusList = loanBusinessRules.convertStatusToLoanStatus(status);
+        List<Loan> loanList = loanRepository.findByUser_IdAndStatusIn(userId, loanStatusList);
+        return loanMapper.loanToLoanResponsesList(loanList);
     }
 
 }

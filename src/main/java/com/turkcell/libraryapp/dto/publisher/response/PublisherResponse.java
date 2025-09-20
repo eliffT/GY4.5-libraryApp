@@ -1,9 +1,14 @@
-package com.turkcell.libraryapp.dto.publisher;
+package com.turkcell.libraryapp.dto.publisher.response;
 
-public class PublisherForGetDto {
+public class PublisherResponse {
+
     private Integer id;
-
     private String name;
+
+    public PublisherResponse(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;
@@ -19,13 +24,5 @@ public class PublisherForGetDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public PublisherForGetDto(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public PublisherForGetDto() {
     }
 }

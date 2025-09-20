@@ -1,5 +1,6 @@
 package com.turkcell.libraryapp.entity;
 
+import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
 import com.turkcell.libraryapp.entity.enumarations.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,6 +25,7 @@ public class User {
    // @Column(nullable = false)
     private String password;
 
+    @Column(unique = true)      // unique email
     private String email;
     private String phone;
 
@@ -31,11 +33,11 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
     @Enumerated(EnumType.STRING)
     private Role role = Role.MEMBER;
+
+    @Enumerated(EnumType.STRING)
+    private MembershipLevel membershipLevel = MembershipLevel.STANDARD;
 
     @OneToMany(mappedBy = "user")
     private List<BookReservation> bookReservations;
@@ -44,7 +46,7 @@ public class User {
     private List<Loan> loans;
 
     public User() {
-        this.isActive = true;
+
     }
 
     public Integer getId() {
@@ -99,20 +101,20 @@ public class User {
         return createdAt;
     }
 
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public MembershipLevel getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(MembershipLevel membershipLevel) {
+        this.membershipLevel = membershipLevel;
     }
 
     public List<BookReservation> getBookReservations() {

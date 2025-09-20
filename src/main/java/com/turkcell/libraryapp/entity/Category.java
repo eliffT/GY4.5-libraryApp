@@ -1,6 +1,5 @@
 package com.turkcell.libraryapp.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,11 +12,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "category_name")
     private String categoryName;
 
     @OneToMany(mappedBy = "category")
     private List<Book> Books;
-
 
     public Integer getId() {
         return id;
@@ -42,6 +41,5 @@ public class Category {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
 
 }

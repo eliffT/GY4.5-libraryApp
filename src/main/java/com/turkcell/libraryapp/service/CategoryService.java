@@ -1,53 +1,45 @@
 package com.turkcell.libraryapp.service;
 
-import com.turkcell.libraryapp.dto.category.CategoryForAddDto;
-import com.turkcell.libraryapp.dto.category.CategoryForGetDto;
+import com.turkcell.libraryapp.dto.category.request.CategoryRequest;
+import com.turkcell.libraryapp.dto.category.response.CategoryResponse;
 import com.turkcell.libraryapp.entity.Category;
+import com.turkcell.libraryapp.mapper.CategoryMapper;
 import com.turkcell.libraryapp.repository.CategoryRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Validated
 public class CategoryService {
-    private CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
+
+    public CategoryService(CategoryRepository categoryRepository,  CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
     }
 
-    public List<CategoryForGetDto> getAllWithDto() {
+    public List<CategoryResponse> getAllCategories() {
         List<Category> categoryList = categoryRepository.findAll();
-        List<CategoryForGetDto> categoryForGetDtoList = new ArrayList<CategoryForGetDto>();
-        for(Category category: categoryList){
-            CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-            categoryForGetDto.setCategoryName(category.getCategoryName());
-            categoryForGetDtoList.add(categoryForGetDto);
-        }
-            return categoryForGetDtoList;
+        return categoryMapper.categoryToCategoryResponseList(categoryList);
     }
 
-    public CategoryForGetDto addWithDto(CategoryForAddDto categoryForAddDto){
-        Category category = new Category();
-        category.setCategoryName(categoryForAddDto.getCategoryName());
-
+    public CategoryResponse createCategory(@Valid CategoryRequest categoryRequest){
+        Category category = categoryMapper.categoryRequestToCategory(categoryRequest);
         Category categorySaved = this.categoryRepository.save(category);
-        CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-        categoryForGetDto.setCategoryName(categorySaved.getCategoryName());
-        return categoryForGetDto;
+        return categoryMapper.categoryToCategoryResponse(categorySaved);
     }
 
-    public CategoryForGetDto getByIdWithDto(Integer id)
-    {
+    public CategoryResponse getCategoryById(Integer id) {
         Category category = categoryRepository.findById(id).orElseThrow();
-        CategoryForGetDto categoryForGetDto = new CategoryForGetDto();
-        categoryForGetDto.setCategoryName(category.getCategoryName());
-        return categoryForGetDto;
+        return categoryMapper.categoryToCategoryResponse(category);
     }
 
-    public void deleteCategoryWithById(Integer id)
-    {
+    public void deleteCategory(Integer id) {
         categoryRepository.deleteById(id);
     }
 }
