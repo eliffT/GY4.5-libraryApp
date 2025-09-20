@@ -1,15 +1,15 @@
 package com.turkcell.libraryapp.dto.bookReservation.response;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public class CreatedBookResevationResponse {
+public class CreateReservationResponse {
     private Integer id;
-    private Date reservationDate;
+    private LocalDate reservationDate;
 
-    public CreatedBookResevationResponse() {
+    public CreateReservationResponse() {
     }
 
-    public CreatedBookResevationResponse(Integer id, Date reservationDate) {
+    public CreateReservationResponse(Integer id, LocalDate reservationDate) {
         this.id = id;
         this.reservationDate = reservationDate;
     }
@@ -22,11 +22,11 @@ public class CreatedBookResevationResponse {
         this.id = id;
     }
 
-    public Date getReservationDate() {
+    public LocalDate getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(Date reservationDate) {
+    public void setReservationDate(LocalDate reservationDate) {
         this.reservationDate = reservationDate;
     }
 }

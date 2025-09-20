@@ -1,23 +1,26 @@
 package com.turkcell.libraryapp.dto.author.response;
 
-import com.turkcell.libraryapp.entity.Book;
-
-import java.util.List;
 
 public class GetAllAuthorResponse {
+    private Integer id;
     private String firstName;
     private String lastName;
-    private Integer id;
-    private List<Book> books;
 
     public GetAllAuthorResponse() {
     }
 
-    public GetAllAuthorResponse(String firstName, String lastName, Integer id, List<Book> books) {
+    public GetAllAuthorResponse(Integer id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
-        this.books = books;
     }
 
     public String getFirstName() {
@@ -36,19 +39,4 @@ public class GetAllAuthorResponse {
         this.lastName = lastName;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 }

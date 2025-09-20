@@ -1,7 +1,11 @@
 package com.turkcell.libraryapp.entity;
 
+import com.turkcell.libraryapp.entity.enumarations.BookStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +17,20 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+//    @Column(unique = true)
+//    private String isbn;
+
     private String title;
-    private Date year;
+    private LocalDate year;
     private String language;
-    private int stock;
+
+    @Column(nullable = false)
+    private int totalCopies;
+
+    private int availableCopies;
+
+    @Enumerated(EnumType.STRING)
+    private BookStatus status =  BookStatus.ACTIVE;
 
     @ManyToOne()
     //@JoinColumn(name = "category_id", nullable = false)
@@ -62,11 +76,11 @@ public class Book {
         this.title = title;
     }
 
-    public Date getYear() {
+    public LocalDate getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(LocalDate year) {
         this.year = year;
     }
 
@@ -78,13 +92,6 @@ public class Book {
         this.language = language;
     }
 
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 
     public Author getAuthor() {
         return author;
@@ -118,4 +125,28 @@ public class Book {
         this.bookReservations = bookReservations;
     }
 
+    public BookStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+
+
+    public int getAvailableCopies() {
+        return availableCopies;
+    }
+
+    public void setAvailableCopies(int availableCopies) {
+        this.availableCopies = availableCopies;
+    }
+
+    public int getTotalCopies() {
+        return totalCopies;
+    }
+
+    public void setTotalCopies(int totalCopies) {
+        this.totalCopies = totalCopies;
+    }
 }
