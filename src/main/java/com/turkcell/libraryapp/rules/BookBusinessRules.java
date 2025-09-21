@@ -1,5 +1,6 @@
 package com.turkcell.libraryapp.rules;
 
+import com.turkcell.libraryapp.core.utils.ISBNGenerator;
 import com.turkcell.libraryapp.entity.Book;
 import com.turkcell.libraryapp.entity.enumList.BookStatus;
 import com.turkcell.libraryapp.repository.BookRepository;
@@ -23,6 +24,20 @@ public class BookBusinessRules {
         }
     }
 
+    // ISBN numarasını kontrol et ve üret
+    public String generateUniqueISBN() {
+        String isbn;
+        do {
+            isbn = ISBNGenerator.generateTimestampBasedISBN();  // ISBN generator'ı kullanıyoruz
+        } while (isIsbnExist(isbn));  // ISBN mevcutsa, tekrar üret
+        return isbn;
+    }
+
+    // Mevcut kitaplarda bu ISBN numarasının olup olmadığını kontrol et
+    private boolean isIsbnExist(String isbn) {
+        return bookRepository.existsByIsbn(isbn);
+    }
+
     public void checkBookStatus(Book book)
     {
         if (!book.getStatus().equals(BookStatus.ACTIVE)){
@@ -30,26 +45,21 @@ public class BookBusinessRules {
         }
     }
 
-    public void checkAvailableCopies(Book book){
+    public void checkTotalCopies(Book book){
 
         if(book.getTotalCopies() < 0){
-            throw new RuntimeException("No total copies for this book");
+            throw new IllegalArgumentException("Total copies cannot be less than zero.");
         }
         if(book.getTotalCopies() < book.getAvailableCopies()){
-            throw new RuntimeException("Available copies cannot exceed total copies");
+            throw new IllegalArgumentException("Available copies cannot exceed total copies");
         }
     }
 
-    public  void checkTotalCopies(Book book)
+    public  void checkAvailableCopies(Book book)
     {
         if (book.getAvailableCopies() <= 0) {
-            throw new RuntimeException("No copies available for this book");
+            throw new IllegalArgumentException("No available copies to borrow");
         }
     }
 
-    public void validateBook(Book book){
-        checkBookStatus(book);
-        checkTotalCopies(book);
-        checkAvailableCopies(book);
-    }
 }

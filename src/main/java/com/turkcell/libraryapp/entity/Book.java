@@ -27,7 +27,7 @@ public class Book {
     private int availableCopies;
 
     @Enumerated(EnumType.STRING)
-    private BookStatus status =  BookStatus.ACTIVE;
+    private BookStatus status;
 
     @ManyToOne()
     //@JoinColumn(name = "category_id", nullable = false)

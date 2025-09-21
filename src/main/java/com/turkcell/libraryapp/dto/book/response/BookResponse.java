@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 public class BookResponse {
     private Integer id;
+    private String isbn;
     private String title;
     private LocalDate year;
     private String language;
@@ -15,9 +16,10 @@ public class BookResponse {
     private CategoryResponse category;
     private PublisherResponse publisher;
 
-    public BookResponse(Integer id, String title, LocalDate year, String language, int availableCopies,
+    public BookResponse(Integer id, String isbn, String title, LocalDate year, String language, int availableCopies,
                         int totalCopies, CategoryResponse category, PublisherResponse publisher) {
         this.id = id;
+        this.isbn = isbn;
         this.title = title;
         this.year = year;
         this.language = language;
@@ -36,6 +38,14 @@ public class BookResponse {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {
