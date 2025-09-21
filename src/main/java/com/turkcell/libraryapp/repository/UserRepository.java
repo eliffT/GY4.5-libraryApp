@@ -15,5 +15,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select distinct u from User u join u.loans l join l.fine f where f.isPaid = :isPaid and u.id = :userId")
     List<User> findUsersWithUnpaidFines(@Param("userId") Integer userId, @Param("isPaid") boolean isPaid);
-
+    Optional<User> findByUsername(String username);
 }

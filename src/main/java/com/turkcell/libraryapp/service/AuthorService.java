@@ -6,12 +6,15 @@ import com.turkcell.libraryapp.dto.author.response.GetAllAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetByIdAuthorResponse;
 import com.turkcell.libraryapp.entity.Author;
 import com.turkcell.libraryapp.repository.AuthorRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.webjars.NotFoundException;
 
 import java.util.*;
 
 @Service
+@Validated
 public class AuthorService {
     AuthorRepository authorRepository;
 
@@ -35,7 +38,7 @@ public class AuthorService {
         return authorResponseList;
     }
 
-    public CreatedAuthorResponse createAuthorWithDto(CreateAuthorRequest createAuthorRequest){
+    public CreatedAuthorResponse createAuthorWithDto(@Valid CreateAuthorRequest createAuthorRequest){
         Author author = new Author();
         author.setFirstName(createAuthorRequest.getFirstName());
         author.setLastName(createAuthorRequest.getLastName());

@@ -5,6 +5,7 @@ import com.turkcell.libraryapp.dto.author.response.CreatedAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetAllAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetByIdAuthorResponse;
 import com.turkcell.libraryapp.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,14 +23,17 @@ public class AuthorController {
     public List<GetAllAuthorResponse> getAllWithDto(){
         return authorService.getAllWithDto();
     }
+
     @PostMapping()
-    public CreatedAuthorResponse createAuthorWithDto(@RequestBody CreateAuthorRequest createAuthorRequest){
+    public CreatedAuthorResponse createAuthorWithDto(@Valid @RequestBody CreateAuthorRequest createAuthorRequest){
         return authorService.createAuthorWithDto(createAuthorRequest);
     }
+
     @GetMapping("/{id}")
     public GetByIdAuthorResponse getByIdAuthorResponse(@PathVariable Integer id){
         return authorService.getByIdAuthorResponse(id);
     }
+
     @DeleteMapping("/{id}")
     public void deleteAuthorWithById(@PathVariable Integer id){
         authorService.deleteAuthorWithById(id);
