@@ -1,33 +1,40 @@
 package com.turkcell.libraryapp.dto.fine.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 public class FineRequest {
 
-    private Boolean isPaid;
-    private Integer amount;
+    @NotNull
+    private boolean isPaid;
+    @PositiveOrZero
+    private double amount;
+    @NotNull
     private Integer loanId;
 
     public FineRequest() {
     }
 
-    public FineRequest(Boolean isPaid, Integer amount, Integer loanId) {
+    public FineRequest(boolean isPaid, double amount, Integer loanId) {
         this.isPaid = isPaid;
         this.amount = amount;
         this.loanId = loanId;
     }
 
-    public Boolean getIsPaid() {
+    public boolean isPaid() {
         return isPaid;
     }
 
-    public void setIsPaid(Boolean isPaid) {
-        this.isPaid = isPaid;
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

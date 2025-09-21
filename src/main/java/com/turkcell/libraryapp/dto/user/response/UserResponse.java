@@ -1,12 +1,7 @@
 package com.turkcell.libraryapp.dto.user.response;
 
 
-import com.turkcell.libraryapp.entity.BookReservation;
-import com.turkcell.libraryapp.entity.Loan;
-import com.turkcell.libraryapp.entity.enumarations.Role;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import com.turkcell.libraryapp.entity.enumList.Role;
 
 public class UserResponse {
 
@@ -16,22 +11,16 @@ public class UserResponse {
     private String email;
     private String phone;
     private Role role;
-    private Boolean active;
-    private LocalDateTime createdAt;
-    private List<BookReservation> bookReservations;
-    private List<Loan> loans;
 
     public UserResponse() {
     }
 
-    public UserResponse(Integer id, String firstName, String lastName, String email, String phone, List<BookReservation> bookReservations, List<Loan> loans) {
+    public UserResponse(Integer id, String firstName, String lastName, String email, String phone) {
         this.id = id;
-        this.firstName= firstName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.bookReservations = bookReservations;
-        this.loans = loans;
     }
 
     public Integer getId() {
@@ -74,22 +63,6 @@ public class UserResponse {
         this.phone = phone;
     }
 
-    public List<BookReservation> getBookReservations() {
-        return bookReservations;
-    }
-
-    public void setBookReservations(List<BookReservation> bookReservations) {
-        this.bookReservations = bookReservations;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -98,19 +71,4 @@ public class UserResponse {
         this.role = role;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

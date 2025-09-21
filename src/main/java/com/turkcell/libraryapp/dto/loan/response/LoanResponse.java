@@ -1,24 +1,28 @@
 package com.turkcell.libraryapp.dto.loan.response;
 
-import com.turkcell.libraryapp.dto.book.BookForGetDto;
+import com.turkcell.libraryapp.dto.book.response.BookResponse;
+import com.turkcell.libraryapp.dto.fine.response.FineResponse;
 import com.turkcell.libraryapp.dto.user.response.UserResponse;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
-import java.util.Date;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class LoanResponse {
 
     private Integer id;
-    private Date borrowDate;
-    private Date dueDate;
-    private Date returnDate;
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
     private LoanStatus status;
     private UserResponse user;
-    private BookForGetDto book;
+    private BookResponse book;
 
     public LoanResponse() {
     }
 
-    public LoanResponse(Integer id, Date borrowDate, Date dueDate, Date returnDate, LoanStatus status, UserResponse user, BookForGetDto book) {
+    public LoanResponse(Integer id, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, LoanStatus status,
+                        UserResponse user, BookResponse book) {
         this.id = id;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
@@ -26,6 +30,7 @@ public class LoanResponse {
         this.status = status;
         this.user = user;
         this.book = book;
+
     }
 
     public Integer getId() {
@@ -36,27 +41,27 @@ public class LoanResponse {
         this.id = id;
     }
 
-    public Date getBorrowDate() {
+    public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
-    public void setBorrowDate(Date borrowDate) {
+    public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
@@ -76,11 +81,12 @@ public class LoanResponse {
         this.user = user;
     }
 
-    public BookForGetDto getBook() {
+    public BookResponse getBook() {
         return book;
     }
 
-    public void setBook(BookForGetDto book) {
+    public void setBook(BookResponse book) {
         this.book = book;
     }
+
 }

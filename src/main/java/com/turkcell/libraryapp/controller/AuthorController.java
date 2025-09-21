@@ -13,29 +13,29 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/authors")
 public class AuthorController {
-    private AuthorService authorService;
+    private final AuthorService authorService;
 
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
 
     @GetMapping()
-    public List<GetAllAuthorResponse> getAllWithDto(){
-        return authorService.getAllWithDto();
+    public List<GetAllAuthorResponse> getAllAuthors(){
+        return authorService.getAllAuthors();
     }
 
     @PostMapping()
-    public CreatedAuthorResponse createAuthorWithDto(@Valid @RequestBody CreateAuthorRequest createAuthorRequest){
-        return authorService.createAuthorWithDto(createAuthorRequest);
+    public CreatedAuthorResponse createAuthor(@Valid @RequestBody CreateAuthorRequest createAuthorRequest){
+        return authorService.createAuthor(createAuthorRequest);
     }
 
     @GetMapping("/{id}")
-    public GetByIdAuthorResponse getByIdAuthorResponse(@PathVariable Integer id){
-        return authorService.getByIdAuthorResponse(id);
+    public GetByIdAuthorResponse getAuthorById(@PathVariable Integer id){
+        return authorService.getAuthorById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAuthorWithById(@PathVariable Integer id){
-        authorService.deleteAuthorWithById(id);
+    public void deleteAuthor(@PathVariable Integer id){
+        authorService.deleteAuthor(id);
     }
 }

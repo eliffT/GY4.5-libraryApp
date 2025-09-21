@@ -1,9 +1,9 @@
 package com.turkcell.libraryapp.controller;
 
-import com.turkcell.libraryapp.dto.loan.TotalLoanDto;
 import com.turkcell.libraryapp.dto.user.request.UserRequest;
 import com.turkcell.libraryapp.dto.user.response.UserResponse;
 import com.turkcell.libraryapp.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +21,12 @@ public class UserController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse createUser(@RequestBody UserRequest userRequest) {
+    public UserResponse createUser(@Valid @RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);
     }
 
     @PutMapping("/update/{id}")
-    public UserResponse updateUser(@PathVariable Integer id, @RequestBody UserRequest userRequest) {
+    public UserResponse updateUser(@PathVariable Integer id,@Valid @RequestBody UserRequest userRequest) {
         return userService.updateUser(id,userRequest);
     }
 
@@ -45,9 +45,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("fines/{id}")
-    public List<UserResponse> getFinesByMember(@PathVariable Integer id, @RequestParam boolean isPaid){
-        return userService.getFinesByUserId(id, isPaid);
+    @GetMapping
+    public UserResponse findUserByEmail(@Valid @RequestParam String status,  @Valid @RequestParam String email) {
+        return userService.findUserByEmail(status,email);
+    }
+
+    @PutMapping("{id}/status")
+    public UserResponse changeUserStatus(@PathVariable Integer id, @Valid @RequestParam String value) {
+        return userService.changeUserStatus(id,value);
+    }
+
+    @GetMapping("/{id}/fines")
+    public UserResponse getUserByIdHasFine(@PathVariable Integer id, @RequestParam boolean isPaid) {
+        return userService.getUserByIdHasFine(id, isPaid);
     }
 
 }

@@ -5,65 +5,46 @@ import com.turkcell.libraryapp.dto.author.response.CreatedAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetAllAuthorResponse;
 import com.turkcell.libraryapp.dto.author.response.GetByIdAuthorResponse;
 import com.turkcell.libraryapp.entity.Author;
+import com.turkcell.libraryapp.mapper.AuthorMapper;
 import com.turkcell.libraryapp.repository.AuthorRepository;
 import jakarta.validation.Valid;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import org.webjars.NotFoundException;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.*;
 
 @Service
 @Validated
 public class AuthorService {
-    AuthorRepository authorRepository;
 
-    public AuthorService(AuthorRepository authorRepository) {
+    private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
+
+    public AuthorService(AuthorRepository authorRepository,  AuthorMapper authorMapper) {
         this.authorRepository = authorRepository;
+        this.authorMapper = authorMapper;
     }
 
-    public List<GetAllAuthorResponse> getAllWithDto(){
+    public List<GetAllAuthorResponse> getAllAuthors(){
         List<Author> authorList = authorRepository.findAll();
-        List<GetAllAuthorResponse> authorResponseList = new ArrayList<GetAllAuthorResponse>();
-
-        for(Author author: authorList){
-            GetAllAuthorResponse authorResponse = new GetAllAuthorResponse();
-            authorResponse.setId(author.getId());
-            authorResponse.setFirstName(author.getFirstName());
-            authorResponse.setLastName(author.getLastName());
-            //authorResponse.setBooks(null);
-
-            authorResponseList.add(authorResponse);
-        }
-        return authorResponseList;
+        return authorMapper.authorToAuthorResponseList(authorList);
     }
 
-    public CreatedAuthorResponse createAuthorWithDto(@Valid CreateAuthorRequest createAuthorRequest){
-        Author author = new Author();
-        author.setFirstName(createAuthorRequest.getFirstName());
-        author.setLastName(createAuthorRequest.getLastName());
-
-        Author authorSaved = this.authorRepository.save(author);
-
-        CreatedAuthorResponse createdAuthorResponse = new CreatedAuthorResponse();
-        createdAuthorResponse.setId(authorSaved.getId());
-        createdAuthorResponse.setFirstName(authorSaved.getFirstName());
-        createdAuthorResponse.setLastName(authorSaved.getLastName());
-
-        return createdAuthorResponse;
+    public CreatedAuthorResponse createAuthor(@Valid CreateAuthorRequest createAuthorRequest){
+        AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
+        Author author = INSTANCE.createAuthorRequestToAuthor(createAuthorRequest);
+        this.authorRepository.save(author);
+        return INSTANCE.authorToCreatedAuthorResponse(author);
     }
 
-    public GetByIdAuthorResponse getByIdAuthorResponse(Integer id){
-        Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Bu id ile bir yazar bulunamadı."));
-
-        GetByIdAuthorResponse getByIdAuthorResponse = new GetByIdAuthorResponse();
-        getByIdAuthorResponse.setFirstName(author.getFirstName());
-        getByIdAuthorResponse.setLastName(author.getLastName());
-
-        return getByIdAuthorResponse;
+    public GetByIdAuthorResponse getAuthorById(Integer id){
+        Author author = authorRepository.findById(id).orElseThrow(() -> new NotFoundException("No author found with this id."));
+        return authorMapper.authorToGetByIdAuthorResponse(author);
     }
 
-    public void deleteAuthorWithById(Integer id){
+    public void deleteAuthor(Integer id){
         authorRepository.deleteById(id);
     }
 }

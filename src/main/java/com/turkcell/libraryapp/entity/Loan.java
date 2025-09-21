@@ -2,10 +2,11 @@ package com.turkcell.libraryapp.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
+import com.turkcell.libraryapp.entity.enumList.LoanStatus;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "loans")
@@ -16,13 +17,13 @@ public class Loan {
     private Integer id;
 
     @Column(name = "borrow_date")
-    private Date borrowDate;
+    private LocalDate borrowDate;
 
     @Column(name = "due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(name = "return_date")
-    private Date returnDate;
+    private LocalDate returnDate;
 
     @Enumerated(EnumType.STRING)  // Enum değerlerini String olarak kaydedilir
     private LoanStatus status;
@@ -32,8 +33,8 @@ public class Loan {
     @JsonIgnore
     private Book book;
 
-    @OneToOne(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Fine fine;
+    @OneToMany(mappedBy = "loan")
+    private List<Fine> fineList;
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
@@ -48,19 +49,19 @@ public class Loan {
         this.id = id;
     }
 
-    public Date getBorrowDate() {
+    public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
-    public void setBorrowDate(Date borrowDate) {
+    public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
     }
 
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
@@ -72,11 +73,11 @@ public class Loan {
         this.status = status;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -88,12 +89,12 @@ public class Loan {
         this.book = book;
     }
 
-    public Fine getFine() {
-        return fine;
+    public List<Fine> getFineList() {
+        return fineList;
     }
 
-    public void setFine(Fine fine) {
-        this.fine = fine;
+    public void setFineList(List<Fine> fineList) {
+        this.fineList = fineList;
     }
 
     public User getUser() {

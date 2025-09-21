@@ -1,9 +1,10 @@
 package com.turkcell.libraryapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.turkcell.libraryapp.entity.enumarations.ReservationStatus;
+import com.turkcell.libraryapp.entity.enumList.ReservationStatus;
 import jakarta.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "book_reservations")
@@ -14,7 +15,7 @@ public class BookReservation {
     private Integer id;
 
     @Column(name = "reservation_date")
-    private Date reservationDate;
+    private LocalDate reservationDate;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
@@ -37,11 +38,11 @@ public class BookReservation {
         this.id = id;
     }
 
-    public Date getReservationDate() {
+    public LocalDate getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(Date reservationDate) {
+    public void setReservationDate(LocalDate reservationDate) {
         this.reservationDate = reservationDate;
     }
 
