@@ -45,5 +45,10 @@ public class BookController {
         return bookService.highValueOfStock();
     }
 
+    @PutMapping("/{id}/copies")
+    public BookResponse updateBookStock(@PathVariable Integer id, @RequestParam Integer delta){
+        return bookService.updateBookStock(id, delta);
+    }
+
 
 }

@@ -19,12 +19,13 @@ public class LoanBusinessRules {
     private final LoanRepository loanRepository;
     private final FineBusinessRules fineBusinessRules;
     private final UserBusinessRules userBusinessRules;
+    private final BookBusinessRules bookBusinessRules;
 
-    public LoanBusinessRules(LoanRepository loanRepository, FineBusinessRules fineBusinessRules,
-                             UserBusinessRules userBusinessRules) {
+    public LoanBusinessRules(LoanRepository loanRepository, FineBusinessRules fineBusinessRules, UserBusinessRules userBusinessRules, BookBusinessRules bookBusinessRules) {
         this.loanRepository = loanRepository;
         this.fineBusinessRules = fineBusinessRules;
         this.userBusinessRules = userBusinessRules;
+        this.bookBusinessRules = bookBusinessRules;
     }
 
     public void loanRules(Book book, User user) {
@@ -36,12 +37,8 @@ public class LoanBusinessRules {
         }
 
         // Kitap stok kontrolü ve status = ACTIVE
-        if (book.getAvailableCopies() <= 0) {
-            throw new RuntimeException("No copies available for this book");
-        }
-        if (!book.getStatus().equals(BookStatus.ACTIVE)){
-            throw new RuntimeException("Book is not active");
-        }
+        bookBusinessRules.checkAvailableCopies(book);
+        bookBusinessRules.checkBookStatus(book);
 
         // Kullanıcının ödenmemiş cezası var mı ?
         fineBusinessRules.validateUserHasUnpaidFines(user);

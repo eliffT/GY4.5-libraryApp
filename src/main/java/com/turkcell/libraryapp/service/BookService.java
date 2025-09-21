@@ -11,6 +11,7 @@ import com.turkcell.libraryapp.repository.AuthorRepository;
 import com.turkcell.libraryapp.repository.BookRepository;
 import com.turkcell.libraryapp.repository.CategoryRepository;
 import com.turkcell.libraryapp.repository.PublisherRepository;
+import com.turkcell.libraryapp.rules.BookBusinessRules;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -27,20 +28,22 @@ public class BookService {
     private final PublisherRepository publisherRepository;
     private final CategoryRepository categoryRepository;
     private final BookMapper bookMapper;
+    private final BookBusinessRules bookBusinessRules;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository,
-                       PublisherRepository publisherRepository, CategoryRepository categoryRepository,
-                       BookMapper bookMapper) {
-
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, PublisherRepository publisherRepository, CategoryRepository categoryRepository, BookMapper bookMapper, BookBusinessRules bookBusinessRules) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.publisherRepository = publisherRepository;
         this.categoryRepository = categoryRepository;
         this.bookMapper = bookMapper;
+        this.bookBusinessRules = bookBusinessRules;
     }
 
     public BookResponse createBook(@Valid BookRequest bookRequest){
+
         Book book = bookMapper.bookRequestToBook(bookRequest);
+
+        bookBusinessRules.validateBook(book);
 
         Category category = categoryRepository.findById(bookRequest.getCategoryId())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
@@ -81,6 +84,23 @@ public class BookService {
     public List<BookResponse> highValueOfStock(){
         List<Book> bookList = bookRepository.highValueOfStock();
         return bookMapper.bookToBookResponseList(bookList);
+    }
+
+    public BookResponse updateBookStock(Integer id, Integer delta){
+        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        bookBusinessRules.checkBookStatus(book);
+        if(delta == 0)
+        {
+            throw new RuntimeException("No updated");
+        }
+
+        book.setTotalCopies(book.getTotalCopies() + delta);
+        book.setAvailableCopies(book.getAvailableCopies() + delta);
+
+        bookBusinessRules.checkAvailableCopies(book);
+        bookRepository.save(book);
+
+        return bookMapper.bookToBookResponse(book);
     }
 
 }
