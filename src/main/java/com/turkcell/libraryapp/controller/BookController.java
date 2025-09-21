@@ -1,7 +1,9 @@
 package com.turkcell.libraryapp.controller;
 
+import com.turkcell.libraryapp.dto.author.request.CreateAuthorRequest;
 import com.turkcell.libraryapp.dto.book.request.BookRequest;
 import com.turkcell.libraryapp.dto.book.response.BookResponse;
+import com.turkcell.libraryapp.entity.Author;
 import com.turkcell.libraryapp.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping()
+    @GetMapping("get-all")
     public List<BookResponse> getAllBooks(){
         return bookService.getAllBooks();
     }
@@ -48,6 +50,15 @@ public class BookController {
     @PutMapping("/{id}/copies")
     public BookResponse updateBookStock(@PathVariable Integer id, @RequestParam Integer delta){
         return bookService.updateBookStock(id, delta);
+    }
+
+    @GetMapping
+    public List<BookResponse> searchBooks(@RequestParam(required = false) String isbn,
+                                          @RequestParam(required = false) String title,
+                                          @RequestParam(required = false) String author,
+                                          @RequestParam Boolean available){
+
+        return bookService.searchBooks(isbn, title, author, available);
     }
 
 
