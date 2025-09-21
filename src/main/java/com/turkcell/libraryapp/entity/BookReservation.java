@@ -1,7 +1,7 @@
 package com.turkcell.libraryapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.turkcell.libraryapp.entity.enumarations.ReservationStatus;
+import com.turkcell.libraryapp.entity.enumList.ReservationStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

@@ -9,6 +9,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByEmail(String email);
 
-
-    User findUserByLoan_User_IdAndIsPaidFalse(Integer id);
 }

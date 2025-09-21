@@ -3,7 +3,7 @@ package com.turkcell.libraryapp.service;
 import com.turkcell.libraryapp.dto.user.request.UserRequest;
 import com.turkcell.libraryapp.dto.user.response.UserResponse;
 import com.turkcell.libraryapp.entity.User;
-import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
+import com.turkcell.libraryapp.entity.enumList.MembershipLevel;
 import com.turkcell.libraryapp.mapper.UserMapper;
 import com.turkcell.libraryapp.repository.FineRepository;
 import com.turkcell.libraryapp.repository.UserRepository;
@@ -12,7 +12,6 @@ import com.turkcell.libraryapp.rules.UserBusinessRules;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.webjars.NotFoundException;
 
 import java.util.List;
@@ -26,14 +25,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final UserBusinessRules  userBusinessRules;
-    private final FineRepository fineRepository;
+    private final FineBusinessRules fineBusinessRules;
 
     public UserService(UserRepository userRepository,  UserMapper userMapper,
-                       UserBusinessRules userBusinessRules,  FineRepository fineRepository) {
+                       UserBusinessRules userBusinessRules,  FineBusinessRules fineBusinessRules ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userBusinessRules = userBusinessRules;
-        this.fineRepository = fineRepository;
+        this.fineBusinessRules = fineBusinessRules;
     }
 
     public UserResponse createUser(@Valid UserRequest request) {
@@ -94,8 +93,11 @@ public class UserService {
         return userMapper.userToUserResponse(user);
     }
 
-//    public UserResponse getUserByIdHasFine(Integer id) {
-//        User user = fineRepository.findUserByLoanUserIdAndIsPaidFalse(id);
-//       return userMapper.userToUserResponse(user);
-//    }
+    public UserResponse getUserByIdHasFine(Integer id, boolean hasFine) {
+       User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("User not found with id: " + id));
+       if(!hasFine){
+           fineBusinessRules.validateUserHasUnpaidFines(user);
+       }
+       return userMapper.userToUserResponse(user);
+    }
 }

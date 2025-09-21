@@ -3,12 +3,9 @@ package com.turkcell.libraryapp.controller;
 import com.turkcell.libraryapp.dto.loan.request.LoanRequest;
 import com.turkcell.libraryapp.dto.loan.request.LoanReturnRequest;
 import com.turkcell.libraryapp.dto.loan.response.LoanResponse;
-import com.turkcell.libraryapp.entity.Loan;
-import com.turkcell.libraryapp.entity.enumarations.LoanStatus;
 import com.turkcell.libraryapp.service.LoanService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

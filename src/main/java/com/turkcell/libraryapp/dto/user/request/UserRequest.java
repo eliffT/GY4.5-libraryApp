@@ -1,7 +1,6 @@
 package com.turkcell.libraryapp.dto.user.request;
 
 
-import com.turkcell.libraryapp.entity.enumarations.MembershipLevel;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

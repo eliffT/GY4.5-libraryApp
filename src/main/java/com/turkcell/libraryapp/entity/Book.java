@@ -1,12 +1,9 @@
 package com.turkcell.libraryapp.entity;
 
-import com.turkcell.libraryapp.entity.enumarations.BookStatus;
+import com.turkcell.libraryapp.entity.enumList.BookStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
