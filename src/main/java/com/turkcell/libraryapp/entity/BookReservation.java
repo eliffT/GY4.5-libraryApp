@@ -20,6 +20,12 @@ public class BookReservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @Column(name = "expire_at")
+    private LocalDate expireAt;
+
     @ManyToOne
     @JoinColumn(name = "book_id")
     @JsonIgnore
@@ -68,5 +74,21 @@ public class BookReservation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(LocalDate expireAt) {
+        this.expireAt = expireAt;
     }
 }

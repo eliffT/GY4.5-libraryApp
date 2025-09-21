@@ -45,4 +45,9 @@ public class ReservationController {
         return reservationService.updateReservations(id, updateReservationRequest);
     }
 
+    @PostMapping("/fulfill-next/")
+    public void fulfillNextForBook(@RequestParam Integer bookId){
+        reservationService.fulfillNextForBook(bookId);
+    }
+
 }
