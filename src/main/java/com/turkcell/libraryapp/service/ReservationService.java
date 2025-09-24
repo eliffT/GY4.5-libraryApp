@@ -9,15 +9,19 @@ import com.turkcell.libraryapp.dto.bookReservation.response.UpdatedReservationRe
 import com.turkcell.libraryapp.entity.Book;
 import com.turkcell.libraryapp.entity.BookReservation;
 import com.turkcell.libraryapp.entity.User;
+import com.turkcell.libraryapp.entity.enumList.ReservationStatus;
 import com.turkcell.libraryapp.mapper.ReservationMapper;
 import com.turkcell.libraryapp.repository.BookRepository;
 import com.turkcell.libraryapp.repository.ReservationRepository;
 import com.turkcell.libraryapp.repository.UserRepository;
+import com.turkcell.libraryapp.rules.FineBusinessRules;
+import com.turkcell.libraryapp.rules.ReservationBusinessRules;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,13 +31,18 @@ public class ReservationService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final ReservationMapper reservationMapper;
+    private final ReservationBusinessRules reservationBusinessRules;
+    private final FineBusinessRules fineBusinessRules;
 
     public ReservationService(ReservationRepository reservationRepository, BookRepository bookRepository,
-                              UserRepository userRepository,  ReservationMapper reservationMapper) {
+                              UserRepository userRepository,  ReservationMapper reservationMapper,
+                              ReservationBusinessRules  reservationBusinessRules, FineBusinessRules fineBusinessRules) {
         this.reservationRepository = reservationRepository;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.reservationMapper = reservationMapper;
+        this.reservationBusinessRules = reservationBusinessRules;
+        this.fineBusinessRules = fineBusinessRules;
     }
 
     public List<GetAllReservationResponse> getAllReservations(){
@@ -44,19 +53,24 @@ public class ReservationService {
     public CreateReservationResponse createReservations(@Valid CreateReservationRequest createReservationRequest){
         BookReservation bookReservation = reservationMapper.createBookRequestToBookReservation(createReservationRequest);
 
-        // Buraya cezaı olan kullanıcıların rezervasyon yapmaması için iş kuralı...
 
         Book book = bookRepository.findById(createReservationRequest.getBookId()).
                 orElseThrow(()->new NotFoundException("Book not found"));
         User user = userRepository.findById(createReservationRequest.getUserId())
                 .orElseThrow(()->new NotFoundException("User not found"));
 
+        fineBusinessRules.validateUserHasUnpaidFines(user);
+        reservationBusinessRules.checkReservationRules(book, user);
+
         bookReservation.setBook(book);
         bookReservation.setUser(user);
+        bookReservation.setCreatedAt(LocalDate.now());
+        bookReservation.setStatus(ReservationStatus.ACTIVE);
+        bookReservation.setExpireAt(null);
 
-        BookReservation reservationSaved = reservationRepository.save(bookReservation);
+        reservationRepository.save(bookReservation);
 
-        return reservationMapper.bookReservationToCreateReservationResponse(reservationSaved);
+        return reservationMapper.bookReservationToCreateReservationResponse(bookReservation);
     }
 
     public GetByIdReservationResponse getReservationById(Integer id){
@@ -84,5 +98,26 @@ public class ReservationService {
         reservation.setBook(book);
         BookReservation updatedReservation = reservationRepository.save(reservation);
         return reservationMapper.bookReservationToUpdateReservationResponse(updatedReservation);
+    }
+
+    public void fulfillNextForBook(Integer bookId){
+        List<BookReservation> reservationList = reservationRepository
+                .findByBookIdAndStatusOrderByCreatedAtAsc(bookId, ReservationStatus.ACTIVE);
+
+        for (BookReservation reservation : reservationList) {
+            if (reservation.getExpireAt() == null) {
+                reservation.setExpireAt(LocalDate.now().plusDays(1));
+                reservationRepository.save(reservation);
+                break;
+            }
+
+            // Expired kontrolü
+            if (reservation.getExpireAt().isBefore(LocalDate.now())) {
+                reservation.setStatus(ReservationStatus.CANCELLED);
+                reservationRepository.save(reservation);
+            }
+
+        }
+
     }
 }

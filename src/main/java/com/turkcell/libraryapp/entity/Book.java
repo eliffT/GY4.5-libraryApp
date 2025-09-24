@@ -14,8 +14,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @Column(unique = true)
-//    private String isbn;
+    @Column(unique = true)
+    private String isbn;
 
     private String title;
     private LocalDate year;
@@ -27,7 +27,7 @@ public class Book {
     private int availableCopies;
 
     @Enumerated(EnumType.STRING)
-    private BookStatus status =  BookStatus.ACTIVE;
+    private BookStatus status;
 
     @ManyToOne()
     //@JoinColumn(name = "category_id", nullable = false)
@@ -145,5 +145,13 @@ public class Book {
 
     public void setTotalCopies(int totalCopies) {
         this.totalCopies = totalCopies;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }

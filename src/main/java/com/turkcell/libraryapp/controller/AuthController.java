@@ -27,7 +27,7 @@ public class AuthController {
         return authService.login(request);
     }
 
-    @PostMapping("verify-token")
+    @GetMapping("verify-token")
     public Boolean verifyToken(@RequestParam("token") String token){
         return authService.validateToken(token);
     }
