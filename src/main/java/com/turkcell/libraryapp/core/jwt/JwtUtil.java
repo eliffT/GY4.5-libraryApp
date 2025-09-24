@@ -3,30 +3,39 @@ package com.turkcell.libraryapp.core.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class JwtUtil {
-    private String SECRET_KEY = "f0ffdaf3265edc4be5e0d283ac850c509bf783e295d061541e35ff810ce0589cdbbd2055130722dd79a7ee44160ae61b4bb1c8f797b2f7965712221091279ec8";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
-    public String generateToken(String username){
+    public String generateToken(String username, List<String> roles){
         Date expirationDate = new Date(System.currentTimeMillis()+1000 * 60 * 60);
 
         HashMap<String, Object> claims = new HashMap<String, Object>();
 
-        claims.put("username",username);
-        claims.put("admin", true);
+        claims.put("roles", roles);
 
-        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-        String jwt = Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(expirationDate).claims(claims).signWith(key).compact();
 
-        return jwt;
+
+        return Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(expirationDate).claims(claims).signWith(getSecretKey()).compact();
+
+
+    }
+
+
+    public List<String> extractRoles(String token){
+        Claims claims = extractAllClaims(token);
+        return claims.get("roles", List.class);
     }
 
     public Boolean validateToken(String token)
@@ -48,10 +57,15 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token)
     {
-        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-        return Jwts.parser().verifyWith(key).build()
+
+        return Jwts.parser().verifyWith(getSecretKey()).build()
                 .parseSignedClaims(token).getPayload();
+    }
+
+
+    private SecretKey getSecretKey(){
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
 }

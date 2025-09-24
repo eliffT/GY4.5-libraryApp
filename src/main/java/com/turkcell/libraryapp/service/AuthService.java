@@ -10,6 +10,8 @@ import com.turkcell.libraryapp.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthService
 {
@@ -44,9 +46,16 @@ public class AuthService
 
         if(!passwordEncoder.matches(request.getPassword(),user.getPassword()))
             throw new RuntimeException("Wrong username or password.");
+        List<String> roles = user
+                .getOperationClaims()
+                .stream()
+                .map(o->o.getName())
+                .toList();
         LoginResponse response = new LoginResponse();
-        response.setToken(jwtUtil.generateToken(user.getUsername()));
+        response.setToken(jwtUtil.generateToken(user.getUsername(), roles));
         return response;
+
+
 
     }
 
