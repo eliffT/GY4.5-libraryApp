@@ -1,5 +1,6 @@
 package com.turkcell.libraryapp.dto.bookReservation.request;
 
+import com.turkcell.libraryapp.entity.enumList.BookStatus;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -11,14 +12,16 @@ public class CreateReservationRequest {
     private Integer userId;
     @NotNull
     private Integer bookId;
+    private BookStatus status;
 
     public CreateReservationRequest() {
     }
 
-    public CreateReservationRequest(LocalDate reservationDate, Integer userId, Integer bookId) {
+    public CreateReservationRequest(LocalDate reservationDate, Integer userId, Integer bookId, BookStatus status) {
         this.reservationDate = reservationDate;
         this.userId = userId;
         this.bookId = bookId;
+        this.status = status;
     }
 
     public LocalDate getReservationDate() {
@@ -43,5 +46,13 @@ public class CreateReservationRequest {
 
     public void setBookId(Integer bookId) {
         this.bookId = bookId;
+    }
+
+    public BookStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
     }
 }

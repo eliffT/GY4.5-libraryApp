@@ -17,18 +17,14 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     public String generateToken(String username, List<String> roles){
-        Date expirationDate = new Date(System.currentTimeMillis()+1000 * 60 * 60);
+        Date expirationDate = new Date(System.currentTimeMillis()+1000 * 60 * 60 * 24);
 
         HashMap<String, Object> claims = new HashMap<String, Object>();
 
         claims.put("roles", roles);
 
-
-
-
         return Jwts.builder().subject(username).issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(expirationDate).claims(claims).signWith(getSecretKey()).compact();
-
 
     }
 

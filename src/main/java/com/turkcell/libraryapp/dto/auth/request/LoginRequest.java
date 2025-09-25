@@ -1,8 +1,14 @@
 package com.turkcell.libraryapp.dto.auth.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class LoginRequest
 {
+    @NotBlank
     private String username;
+
+    @Size(min = 5)
     private String password;
 
     public String getUsername() {
