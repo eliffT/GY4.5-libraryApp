@@ -6,6 +6,7 @@ import com.turkcell.libraryapp.dto.auth.request.RegisterRequest;
 import com.turkcell.libraryapp.dto.auth.response.LoginResponse;
 import com.turkcell.libraryapp.dto.auth.response.RegisteredResponse;
 import com.turkcell.libraryapp.entity.User;
+import com.turkcell.libraryapp.mapper.UserMapper;
 import com.turkcell.libraryapp.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,18 @@ public class AuthService
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final UserMapper userMapper;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.userMapper = userMapper;
     }
 
     public RegisteredResponse register(RegisterRequest request)
     {
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword())); // ASLA plain-text olarak yazmıyoruz.
+        User user = userMapper.requestToUser(request,passwordEncoder);
 
         userRepository.save(user);
 
@@ -51,11 +52,10 @@ public class AuthService
                 .stream()
                 .map(o->o.getName())
                 .toList();
+
         LoginResponse response = new LoginResponse();
         response.setToken(jwtUtil.generateToken(user.getUsername(), roles));
         return response;
-
-
 
     }
 

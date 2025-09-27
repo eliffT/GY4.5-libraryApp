@@ -18,7 +18,7 @@ public class BookReservation {
     private LocalDate reservationDate;
 
     @Enumerated(EnumType.STRING)
-    private ReservationStatus status;
+    private ReservationStatus status = ReservationStatus.ACTIVE;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
