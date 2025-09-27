@@ -1,5 +1,7 @@
 package com.turkcell.libraryapp.rules;
 
+import com.turkcell.libraryapp.core.exception.detail.ValidationExceptionDetails;
+import com.turkcell.libraryapp.core.exception.type.BusinessException;
 import com.turkcell.libraryapp.core.utils.ISBNGenerator;
 import com.turkcell.libraryapp.entity.Book;
 import com.turkcell.libraryapp.entity.enumList.BookStatus;
@@ -20,7 +22,7 @@ public class BookBusinessRules {
                         .orElse(null);
 
         if (bookWithSameTitleAndLanguage != null) {
-            throw new RuntimeException("Bu başlık ve dil ile zaten bir kitap zaten ekli.");
+            throw new BusinessException("Bu başlık ve dil ile zaten bir kitap zaten ekli.");
         }
     }
 
@@ -41,7 +43,7 @@ public class BookBusinessRules {
     public void checkBookStatus(Book book)
     {
         if (!book.getStatus().equals(BookStatus.ACTIVE)){
-            throw new RuntimeException("Book is not active");
+            throw new BusinessException("Book is not active");
         }
     }
 
